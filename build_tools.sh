@@ -45,17 +45,42 @@ custom_build() {
                shared zlib-dynamic
       make depend
     ;;
-
     "wget")
       ./configure --prefix=/usr      \
                   --sysconfdir=/etc  \
                   --with-ssl=openssl
     ;;
-    
     "curl")
       ./configure --prefix=/usr               \
                   --disable-static            \
                   --enable-threaded-resolver
+    "libffi")
+      sed -e '/^includesdir/ s/$(libdir).*$/$(includedir)/' \
+        -i include/Makefile.in
+      sed -e '/^includedir/ s/=.*$/=@includedir@/' \
+        -e 's/^Cflags: -I${includedir}/Cflags:/' \
+        -i libffi.pc.in
+      ./configure --prefix=/usr --disable-static
+    ;;
+    "Python")
+      ./configure --prefix=/usr       \
+                  --enable-shared     \
+                  --with-system-expat \
+                  --with-system-ffi   \
+                  --enable-unicode=ucs4
+    ;;
+    "pcre")
+      patch -Np1 -i ../pcre-8.38-upstream_fixes-1.patch &&
+      ./configure --prefix=/usr                     \
+                  --docdir=/usr/share/doc/pcre-8.38 \
+                  --enable-unicode-properties       \
+                  --enable-pcre16                   \
+                  --enable-pcre32                   \
+                  --enable-pcregrep-libz            \
+                  --enable-pcregrep-libbz2          \
+                  --enable-pcretest-libreadline     \
+                  --disable-static
+    ;;
     *)
       ./configure --prefix=/usr --disable-static
     ;;
@@ -67,12 +92,12 @@ custom_build() {
     "p7zip")
       make -j $CORES all
     ;;
-    
+
     *)
       make -j $CORES
     ;;
-
-  case $package_name in 
+# Install case loop
+  case $package_name in
     "openssl")
       sed -i 's# libcrypto.a##;s# libssl.a##' Makefile
       make MANDIR=/usr/share/man MANSUFFIX=ssl install
@@ -107,7 +132,10 @@ custom_build() {
       rm -rf docs
       mv -i docs-save doc
     ;;
-    *)  
+    "Python")
+      make install
+      chmod -v 755 /usr/lib/libpython2.7.so.1.0
+    *)
       make install
     ;;
   esac
@@ -116,4 +144,3 @@ custom_build() {
 custom_build "openssl" "1.0.2g" "g"
 custom_build "p7zip" "15.14.1" "b"
 custom_build "wget" "1.17.1" "x"
-
