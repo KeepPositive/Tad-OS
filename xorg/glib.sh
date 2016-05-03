@@ -1,18 +1,20 @@
 #! /bin/bash
 
-PACKAGE=""
+PACKAGE="glib"
 VERSION=$1
-FOLD_NAME="$PACKAGE-$VERSION"
+FOLD_NAME=$PACKAGE-$VERSION
 
 if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
+tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.xz"
 pushd "$FOLD_NAME"
 
 # Configure the source
-
+./configure --prefix=/usr       \
+            --with-pcre=system  \
+            --with-python=/usr/bin/python2
 
 # Build using the configured sources
 make -j "$CORES"

@@ -15,7 +15,7 @@ CORES=$(grep -c ^processor /proc/cpuinfo)
 echo "Building extra tools"
 sleep 5
 # build which
-source "$SCRIPT_DIR/which.sh" "2.21"
+#source "$SCRIPT_DIR/which.sh" "2.21"
 # build openssl
 source "$SCRIPT_DIR/openssl.sh" "1.0.2g"
 # build pcre

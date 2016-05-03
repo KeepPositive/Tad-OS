@@ -16,14 +16,14 @@ as_root() {
 
 cd "$BUILD_DIR/$build_type"
 # For each package in the group, run the commands in the do loop.
-for package in $(grep -v '^#' "$START_DIR/sha256/$build_type.sha256" \
+for package in $(grep -v '^#' "$START_DIR/sha256/$BUILD_TYPE.sha256" \
                          | awk '{print $2}')
 do
     fold_name=${package%.tar.bz2}
-    tar xvf $package
-    pushd $package_dir
+    tar xvf "$START_DIR/packs/$BUILD_TYPE/$package"
+    pushd $fold_name
     ./configure $XORG_CONFIG
-    as_root make install
+    #as_root make install
     popd
-    rm -rf $package_dir
+    rm -rf $fold_name
 done

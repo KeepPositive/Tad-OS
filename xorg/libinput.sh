@@ -1,18 +1,20 @@
 #! /bin/bash
 
-PACKAGE=""
+PACKAGE="libinput"
 VERSION=$1
-FOLD_NAME="$PACKAGE-$VERSION"
+FOLD_NAME=$PACKAGE-$VERSION
 
 if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
+tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.xz"
 pushd "$FOLD_NAME"
 
 # Configure the source
-
+./configure $XORG_CONFIG       \
+            --disable-libwacom \
+            --with-udev-dir=/lib/udev
 
 # Build using the configured sources
 make -j "$CORES"

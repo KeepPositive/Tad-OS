@@ -1,8 +1,8 @@
 #! /bin/bash
 
-PACKAGE=""
+PACKAGE="pixman"
 VERSION=$1
-FOLD_NAME="$PACKAGE-$VERSION"
+FOLD_NAME=$PACKAGE-$VERSION
 
 if [ -z "$CORES" ]; then
 	CORES='4'
@@ -12,7 +12,7 @@ tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
 pushd "$FOLD_NAME"
 
 # Configure the source
-
+./configure --prefix=/usr --disable-static
 
 # Build using the configured sources
 make -j "$CORES"

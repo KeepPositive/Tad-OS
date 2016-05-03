@@ -10,7 +10,7 @@ if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xf "$PACKAGE_DIR/${PACKAGE}_{$VERSION}_src_all.tar.bz2"
+tar xf "$PACKAGE_DIR/${PACKAGE}_${VERSION}_src_all.tar.bz2"
 pushd "$FOLD_NAME"
 
 # Build using the configured sources
