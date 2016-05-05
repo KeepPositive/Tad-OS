@@ -17,9 +17,9 @@ get_group() {
     echo "Downloading $download_type"
     
     # If directory does not exist for group, create it
-    if [ ! -d "$download_type" ]
+    if [ ! -d "$PACKAGE_DIR/$download_type" ]
     then
-        mkdir "$download_type"
+        mkdir "$PACKAGE_DIR/$download_type"
     fi
     # Enter the directory where the packages should be kept
     pushd "$PACKAGE_DIR/$download_type" > /dev/null
@@ -46,7 +46,7 @@ get_xorg_group() {
     download_type=$1
     # X.Org groups are installed inside a folder with the 'xorg' folder
     group_dir="$START_DIR/packs/xorg/$download_type"
-    sha_file="$START_DIR/sha256/$download_type.sha256"
+    sha_file="$START_DIR/sha256/xorg-$download_type.sha256"
 
     echo "Downloading xorg-$download_type"
 
@@ -70,7 +70,7 @@ get_xorg_group() {
              --directory-prefix="$group_dir"                  \
              --input-file=- -B "http://ftp.x.org/pub/individual/$download_type/"
 
-    sha256sum --quiet -c "$START_DIR/sha256/${download_type}.sha256"
+    sha256sum --quiet -c "$sha_file"
 
     if [ "$?" -eq 0 ]
     then

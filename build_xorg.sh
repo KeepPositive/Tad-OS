@@ -4,7 +4,7 @@
 # from scratch, along with all of it's necessary dependencies.
 START_DIR=$(pwd)
 SCRIPT_DIR="$START_DIR/xorg"
-PACKAGE_DIR="$START_DIR/packs"
+PACKAGE_DIR="$START_DIR/packs/xorg"
 XORG_PREFIX="/usr"
 XORG_CONFIG="--prefix=$XORG_PREFIX --sysconfdir=/etc \
              --localstatedir=/var --disable-static"

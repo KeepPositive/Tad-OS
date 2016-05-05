@@ -5,7 +5,7 @@
 # SIMPLICITY.
 START_DIR=$(pwd)
 SCRIPT_DIR="$START_DIR/extra"
-PACKAGE_DIR="$START_DIR/packs"
+PACKAGE_DIR="$START_DIR/packs/extra"
 # Configure stuffs here
 INSTALL=0
 CORES=$(grep -c ^processor /proc/cpuinfo)
