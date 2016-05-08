@@ -9,7 +9,13 @@ if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
+tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.xz"
+
+pushd "$FOLD_NAME"
+
+patch -Np1 -i "$PACKAGE_DIR/glibc-2.23-upstream_fixes-1.patch"
+
+popd
 
 mkdir "$BUILD_DIR" 
 

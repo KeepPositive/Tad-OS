@@ -3,6 +3,7 @@
 PACKAGE="gcc"
 VERSION=$1
 FOLD_NAME="$PACKAGE-$VERSION"
+BUILD_DIR="$LFS/$FOLD_NAME/build"
 MPFR_VER=$2
 GMP_VER=$3
 MPC_VER=$4
@@ -11,18 +12,18 @@ if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
+tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.bz2"
 
 pushd "$FOLD_NAME"
 #  GCC needs some libraries here while installing, so extract them and move
 # them to the correct directories where GCC can find them.
-tar -xf "../mpfr-$MPFR_VER.tar.xz"
+tar -xf "$PACKAGE_DIR/mpfr-$MPFR_VER.tar.xz"
 mv -v "mpfr-$MPFR_VER" mpfr
 
-tar -xf "../gmp-$GMP_VER.tar.xz"
+tar -xf "$PACKAGE_DIR/gmp-$GMP_VER.tar.xz"
 mv -v "gmp-$GMP_VER" gmp
 
-tar -xf "../mpc-$MPC_VER.tar.gz"
+tar -xf "$PACKAGE_DIR/mpc-$MPC_VER.tar.gz"
 mv -v "mpc-$MPC_VER" mpc
 
 for file in \
@@ -40,7 +41,9 @@ done
 
 popd
 
-pushd "$FOLD_NAME/build"
+mkdir "$BUILD_DIR"
+
+pushd "$BUILD_DIR"
 
 # Configure the source
 CC=$LFS_TGT-gcc                                    \
@@ -64,8 +67,9 @@ make -j "$CORES"
 if [ "$INSTALL" -eq 1 ]
 then
     make install
-	# A small test
-	ln -sv gcc /tools/bin/cc
+	# Create a symbolic link between gcc and cc
+	ln -sfv gcc /tools/bin/cc
+    # Run a small test to ensure everything is working just fine
 	echo 'int main(){}' > dummy.c
 	cc dummy.c
 	readelf -l a.out | grep ': /tools'

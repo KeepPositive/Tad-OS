@@ -21,5 +21,6 @@ sha256sum "$group_dir/"* > "$SHA_DIR/$group.sha256"
 
 }
 
+sha_maker "base"
 sha_maker "extra"
 sha_maker "xorg"

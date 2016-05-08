@@ -2,18 +2,17 @@
 
 PACKAGE="tcl-core"
 VERSION=$1
-FOLD_NAME="$PACKAGE-$VERSION"
+FOLD_NAME="$PACKAGE$VERSION"
 
 if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
+tar xf "$PACKAGE_DIR/$PACKAGE$VERSION-src.tar.gz"
 
-pushd "$FOLD_NAME"
+pushd "tcl$VERSION/unix"
 
 # Configure the source
-cd unix
 ./configure --prefix=/tools
 
 # Build using the configured sources
@@ -24,9 +23,9 @@ if [ "$INSTALL" -eq 1 ]; then
     make install
 	chmod -v u+w /tools/lib/libtcl8.6.so
 	make install-private-headers
-	ln -sv tclsh8.6 /tools/bin/tclsh
+	ln -sfv tclsh8.6 /tools/bin/tclsh
 fi
 
 popd
 
-rm -rf "$FOLD_NAME"
+rm -rf "tcl$VERSION/unix"

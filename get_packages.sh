@@ -90,6 +90,9 @@ fi
 
 # Pass an argument to the script so it can be searched here.
 case $SETTING in
+"base")
+    get_group "base"
+;;
 "extra")
     get_group "extra"
 ;;

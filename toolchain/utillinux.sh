@@ -1,6 +1,6 @@
 #! /bin/bash
 
-PACKAGE="check"
+PACKAGE="util-linux"
 VERSION=$1
 FOLD_NAME="$PACKAGE-$VERSION"
 
@@ -8,11 +8,15 @@ if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
+tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.xz"
 pushd "$FOLD_NAME"
 
 # Configure the source
-PKG_CONFIG= ./configure --prefix=/tools
+./configure --prefix=/tools                \
+            --without-python               \
+            --disable-makeinstall-chown    \
+            --without-systemdsystemunitdir \
+            PKG_CONFIG=""
 
 # Build using the configured sources
 make -j "$CORES"

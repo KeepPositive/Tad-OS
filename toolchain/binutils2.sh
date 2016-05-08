@@ -3,13 +3,13 @@
 PACKAGE="binutils"
 VERSION=$1
 FOLD_NAME="$PACKAGE-$VERSION"
-BUILD_DIR="$PACKAGE_DIR/$FOLD_NAME/build"
+BUILD_DIR="$LFS/$FOLD_NAME/build"
 
 if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
+tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.bz2"
 
 mkdir "$BUILD_DIR"
 

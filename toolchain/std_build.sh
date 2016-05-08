@@ -1,18 +1,23 @@
 #! /bin/bash
 
-PACKAGE="check"
-VERSION=$1
-FOLD_NAME="$PACKAGE-$VERSION"
+#  For building toolchain related tools which have very simple install 
+# instructions
 
-if [ -z "$CORES" ]; then
+PACKAGE=$1
+VERSION=$2
+FOLD_NAME="$PACKAGE-$VERSION"
+FILE_TYPE=$3
+
+if [ -z "$CORES" ] 
+then
 	CORES='4'
 fi
 
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
+tar xf "$PACKAGE_DIR/$FOLD_NAME$FILE_TYPE"
 pushd "$FOLD_NAME"
 
 # Configure the source
-PKG_CONFIG= ./configure --prefix=/tools
+./configure --prefix=/tools
 
 # Build using the configured sources
 make -j "$CORES"
