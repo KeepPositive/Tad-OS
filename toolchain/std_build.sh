@@ -1,6 +1,6 @@
 #! /bin/bash
 
-#  For building toolchain related tools which have very simple install 
+#  For building toolchain related tools which have very simple install
 # instructions
 
 PACKAGE=$1
@@ -8,12 +8,12 @@ VERSION=$2
 FOLD_NAME="$PACKAGE-$VERSION"
 FILE_TYPE=$3
 
-if [ -z "$CORES" ] 
+if [ -z "$CORES" ]
 then
 	CORES='4'
 fi
 
-tar xf "$PACKAGE_DIR/$FOLD_NAME$FILE_TYPE"
+tar xvf "$PACKAGE_DIR/$FOLD_NAME$FILE_TYPE"
 pushd "$FOLD_NAME"
 
 # Configure the source

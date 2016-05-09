@@ -21,6 +21,26 @@ sha256sum "$group_dir/"* > "$SHA_DIR/$group.sha256"
 
 }
 
-sha_maker "base"
-sha_maker "extra"
-sha_maker "xorg"
+## Start script
+case $SETTING in
+
+    "base")
+        sha_maker "base"
+    ;;
+    "extra")
+        sha_maker "extra"
+    ;;
+
+    "xorg")
+        sha_maker "xorg"
+    ;;
+
+    "all")
+        sha_maker "base"
+        sha_maker "extra"
+        sha_maker "xorg"
+    ;;
+
+esac
+
+## End script

@@ -15,7 +15,7 @@ get_group() {
     sha_file="$START_DIR/sha256/$download_type.sha256"
 
     echo "Downloading $download_type"
-    
+
     # If directory does not exist for group, create it
     if [ ! -d "$PACKAGE_DIR/$download_type" ]
     then
@@ -30,14 +30,14 @@ get_group() {
 
     # Verify that the packages are O.K.
     sha256sum --quiet -c "$sha_file" # Exit the package directory, back to the PACKAGE_DIR
-   
+
     if [ "$?" -eq 0 ]
     then
         echo "SHA256 check passed for $download_type"
     else
         echo "Error with SHA256 checksum test."
     fi
- 
+
     popd > /dev/null
 }
 
@@ -55,16 +55,16 @@ get_xorg_group() {
         mkdir "$group_dir"
     fi
 
-    pushd "$group_dir" > /dev/null 
+    pushd "$group_dir" > /dev/null
     # This mess of a function below actually has three parts:
-    
-    #  'grep', when given then '^#' argument reads each line in the file it is 
-    # given, which is then piped to awk using the '|' character. awk's job is 
-    # to split the line into parts at each space. When the second 'word' is 
+
+    #  'grep', when given then '^#' argument reads each line in the file it is
+    # given, which is then piped to awk using the '|' character. awk's job is
+    # to split the line into parts at each space. When the second 'word' is
     # found, it can be extracted and piped to wget.
     grep -v '^#' "$sha_file" | awk '{print $2}' | \
-    #  Finally, 'wget' downloads all the packages in the group. Since all of 
-    # these packages in the group basically have the same prefix URL, they can 
+    #  Finally, 'wget' downloads all the packages in the group. Since all of
+    # these packages in the group basically have the same prefix URL, they can
     # be downloaded using only there names in the respective SHA256 file.
         wget --quiet --show-progress --continue --no-clobber  \
              --directory-prefix="$group_dir"                  \
@@ -90,52 +90,54 @@ fi
 
 # Pass an argument to the script so it can be searched here.
 case $SETTING in
-"base")
-    get_group "base"
-;;
-"extra")
-    get_group "extra"
-;;
 
-"xorg")
-    get_group "xorg"
-;;
+    "base")
+        get_group "base"
+    ;;
+    "extra")
+        get_group "extra"
+    ;;
 
-"xorg-proto")
-    get_xorg_group "proto"
-;;
+    "xorg")
+        get_group "xorg"
+    ;;
 
-"xorg-lib")
-    get_xorg_group "lib"
-;;
+    "xorg-proto")
+        get_xorg_group "proto"
+    ;;
 
-"xorg-app")
-    get_xorg_group "app"
-;;
+    "xorg-lib")
+        get_xorg_group "lib"
+    ;;
 
-"xorg-font")
-    get_xorg_group "font"
-;;
+    "xorg-app")
+        get_xorg_group "app"
+    ;;
 
-"all")
-    for group in "extra" "xorg"
-    do
-        get_group $group
-    done
+    "xorg-font")
+        get_xorg_group "font"
+    ;;
 
-    for group in "proto" "lib" "app" "font"
-    do
-        get_xorg_group $group
-    done
-;;
+    "all")
+        for group in "extra" "xorg"
+        do
+            get_group $group
+        done
 
-*) # Print a help  message if you enter an invalid argument
-echo "You should enter one of the following:"
-printf "\t'all': download all package groups\n"
-printf "\t'extra': extra tools for building, like CMake and Git\n"
-printf "\t'xorg': libraries and tools necessary for GUIs\n"
-printf "\t'xorg-*': sub-groups for xorg: 'proto', 'lib', 'app' and 'font'\n"
-;;
+        for group in "proto" "lib" "app" "font"
+        do
+            get_xorg_group $group
+        done
+    ;;
+
+    *) # Print a help  message if you enter an invalid argument
+    echo "You should enter one of the following:"
+    printf "\t'all': download all package groups\n"
+    printf "\t'base': the packages need to build a base Tad OS system (Use for toolchain too)\n"
+    printf "\t'extra': extra tools for building, like CMake and Git\n"
+    printf "\t'xorg': libraries and tools necessary for GUIs\n"
+    printf "\t'xorg-*': sub-groups for xorg: 'proto', 'lib', 'app' and 'font'\n"
+    ;;
 
 esac
 

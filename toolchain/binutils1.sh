@@ -9,7 +9,7 @@ if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.bz2"
+tar xvf "$PACKAGE_DIR/$FOLD_NAME.tar.bz2"
 
 mkdir "$BUILD_DIR"
 
@@ -28,10 +28,10 @@ make -j "$CORES"
 
 # Install the built package
 if [ "$INSTALL" -eq 1 ]
-then    
+then
     case $(uname -m) in
-        x86_64) mkdir -v /tools/lib 
-                ln -sv lib /tools/lib64 
+        x86_64) mkdir -v /tools/lib
+                ln -sv lib /tools/lib64
         ;;
     esac
     make install

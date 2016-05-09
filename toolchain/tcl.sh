@@ -8,7 +8,7 @@ if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xf "$PACKAGE_DIR/$PACKAGE$VERSION-src.tar.gz"
+tar xvf "$PACKAGE_DIR/$PACKAGE$VERSION-src.tar.gz"
 
 pushd "tcl$VERSION/unix"
 

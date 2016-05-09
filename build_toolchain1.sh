@@ -10,8 +10,10 @@ MOUNT_DIR=/dev/sda7
 LFS=/mnt/lfs
 LFS_TOOL="$LFS/tools"
 LFS_SRC="$LFS/source"
+# For a 64 bit computer
 LFS_TGT=$(uname -m)-lfs-linux-gnu
-## User creation related variables
+# For the Raspberry Pi
+#LFS_TGT=$(uname -m)-lfs-linux-gnueabihf
 # The name of the group the default user will be added to
 DEFAULT_GROUP=lfs
 # The name of the default user
@@ -46,17 +48,17 @@ do
         mkdir -v $directory
     fi
 done
-# if $LFS_TOOL isn't symbolically linked to /tools of your system, do so
+# force a symbolic link to /tools of your system, do so
 ln -sfv "$LFS_TOOL" /
 # Check if the default user exists
-id -u "$DEFAULT_USER" &> /dev/null 
+id -u "$DEFAULT_USER" &> /dev/null
 if [ $? -eq 1 ]
 then
     # Create a user and a group which are named lfs
     groupadd "$DEFAULT_GROUP"
     useradd -s /bin/bash -g "$DEFAULT_GROUP" -m -k /dev/null "$DEFAULT_USER"
     # Set a password for the lfs user
-    echo "$DEFAULT_PASS" | passwd "$DEFAULT_USER" --stdin
+    passwd "$DEFAULT_USER" --stdin
 else
     echo "Seems the $DEFAULT_USER already exists. Continuing."
 fi
@@ -66,11 +68,11 @@ cp -r "$SCRIPT_DIR" "$LFS"
 cp "$PACKAGE_DIR"/* "$LFS_SRC"
 # Copy over the second part of the build script to LFS
 cp "$START_DIR/build_toolchain2.sh" "$LFS"
-# Make bashrc and bash_profile in DEFAULT_USER's home
+# Make bash_profile which sets the default terminal values
 cat > /home/$DEFAULT_USER/.bash_profile << 'EOF'
 exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash
 EOF
-
+# Make bashrc which defines environment variables for programs to use.
 cat > /home/$DEFAULT_USER/.bashrc << EOF
 set +h
 umask 022
@@ -82,6 +84,4 @@ export LFS LC_ALL LFS_TGT PATH
 EOF
 
 # Change ownership of LFS_TOOL and LFS_SRC
-chown -v "$DEFAULT_USER" "$LFS_TOOL"
-chown -v "$DEFAULT_USER" "$LFS_SRC"
-
+chown -v "$DEFAULT_USER" "$LFS"

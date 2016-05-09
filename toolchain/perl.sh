@@ -8,7 +8,7 @@ if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.bz2"
+tar xvf "$PACKAGE_DIR/$FOLD_NAME.tar.bz2"
 pushd "$FOLD_NAME"
 
 # Configure the source
