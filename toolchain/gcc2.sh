@@ -37,11 +37,8 @@ mv -v "mpc-$MPC_VER" mpc
 
 case $SYSTEM in
 "rpi")
-    for file in $(find gcc/config -name linux64.h -o \
-                                  -name linux.h -o \ 
-                                  -name sysv4.h -o \
-                                  -name linux-eabi.h -o \
-                                  -name linux-elf.h)
+    for file in \
+		$(find gcc/config -name linux64.h -o -name linux.h -o -name sysv4.h -o -name linux-eabi.h -o -name linux-elf.h)
     do
         cp -uv $file{,.orig}
         sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&@g' \
