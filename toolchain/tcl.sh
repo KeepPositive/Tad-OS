@@ -28,4 +28,4 @@ fi
 
 popd
 
-rm -rf "tcl$VERSION/unix"
+rm -rf "tcl$VERSION"

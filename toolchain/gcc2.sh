@@ -17,11 +17,9 @@ tar xvf "$PACKAGE_DIR/$FOLD_NAME.tar.bz2"
 pushd "$FOLD_NAME"
 
 case $SYSTEM in
-
 "rpi")
     patch -Np1 -i "$PACKAGE_DIR/gcc-5.3.0-rpi3-cpu-default.patch"
 ;;
-
 esac
 
 #  GCC needs some libraries here while installing, so extract them and move
@@ -49,9 +47,6 @@ case $SYSTEM in
               #define STANDARD_STARTFILE_PREFIX_2 ""' >> $file
         touch $file.orig
     done
-
-    sed -i 's/none-/armv6l-/' Makefile
-    sed -i 's/none-/armv7l-/' Makefile
 ;;
 
 *)
@@ -68,7 +63,6 @@ case $SYSTEM in
         touch "$file.orig"
     done
 ;;
-
 esac
 
 popd
@@ -91,6 +85,13 @@ RANLIB=$LFS_TGT-ranlib                             \
     --disable-multilib                             \
     --disable-bootstrap                            \
     --disable-libgomp
+
+case $SYSTEM in
+"rpi")
+    sed -i 's/none-/armv6l-/' Makefile
+    sed -i 's/none-/armv7l-/' Makefile
+;;
+esac
 
 # Build using the configured sources
 make -j "$CORES"

@@ -9,6 +9,7 @@ if [ -z "$CORES" ]; then
 fi
 
 tar xvf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
+
 pushd "linux-$FOLD_NAME"
 
 # Clean the sources
@@ -22,4 +23,4 @@ fi
 
 popd
 
-rm -rf "$FOLD_NAME"
+rm -rf "linux-$FOLD_NAME"
