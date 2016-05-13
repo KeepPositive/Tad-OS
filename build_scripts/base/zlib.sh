@@ -1,21 +1,16 @@
 #! /bin/bash
 
-#  For building toolchain related tools which have very simple install
-# instructions
-
-PACKAGE=$1
-VERSION=$2
+PACKAGE="zlib"
+VERSION=$1
 FOLD_NAME="$PACKAGE-$VERSION"
-FILE_TYPE=$3
 
-if [ -z "$CORES" ]
-then
+if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xvf "$PACKAGE_DIR/$FOLD_NAME$FILE_TYPE"
-pushd "$FOLD_NAME"
+tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
 
+pushd "$FOLD_NAME"
 # Configure the source
 ./configure --prefix=/usr
 
@@ -25,6 +20,8 @@ make -j "$CORES"
 # Install the built package
 if [ "$INSTALL" -eq 1 ]; then
     make install
+	mv -v /usr/lib/libz.so.* /lib
+	ln -sfv ../../lib/$(readlink /usr/lib/libz.so) /usr/lib/libz.so
 fi
 
 popd

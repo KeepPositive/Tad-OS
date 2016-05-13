@@ -11,21 +11,22 @@ fi
 
 tar xvf "$PACKAGE_DIR/$FOLD_NAME.tar.bz2"
 
+pushd "$FOLD_NAME"
+# Verify some things using expect
+expect -c "spawn ls"
+# Apply this patch
+patch -Np1 -i $PACKAGE_DIR/binutils-2.26-upstream_fixes-3.patch
+popd
+
 mkdir "$BUILD_DIR"
-
+# Enter the build directory
 pushd "$BUILD_DIR"
-
 # Configure the source
-../configure --prefix=/tools            \
-             --with-sysroot="$LFS"      \
-             --with-lib-path=/tools/lib \
-             --target="$LFS_TGT"        \
-             --disable-nls              \
+../configure --prefix=/usr   \
+             --enable-shared \
              --disable-werror
-
 # Build using the configured sources
-make -j "$CORES"
-
+make tooldir=/usr -j "$CORES"
 # Install the built package
 if [ "$INSTALL" -eq 1 ]
 then
@@ -34,9 +35,9 @@ then
                 ln -sv lib /tools/lib64
         ;;
     esac
-    make install
+    make tooldir=/usr install
 fi
-
+# Exit the build dir
 popd
-
+# Remove the source code directory
 rm -rf "$FOLD_NAME"

@@ -16,16 +16,14 @@ GZIP=".tar.gz"
 ## End variables
 
 ## Start script
-
+# Exit when an error occurs
 set -o errexit
-
 # Start building stuff!
 source "$SCRIPT_DIR/binutils1.sh" "2.26"
 
 source "$SCRIPT_DIR/gcc1.sh" "6.1.0" "3.1.4" "6.1.0" "1.0.3"
 
 case $SYSTEM in
-
 "rpi")
     source "$SCRIPT_DIR/rpi-headers.sh" "4.4.y"
 ;;
@@ -33,7 +31,6 @@ case $SYSTEM in
 *)
     source "$SCRIPT_DIR/linux-headers.sh" "4.5.2"
 ;;
-
 esac
 
 source "$SCRIPT_DIR/glibc.sh" "2.23"
