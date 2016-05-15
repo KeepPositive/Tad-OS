@@ -7,26 +7,37 @@
 START_DIR=$(pwd)
 PACKAGE_DIR="$START_DIR/packs"
 SHA_DIR="$START_DIR/sha256"
+SETTING=$1
 
 sha_maker () {
 
 group=$1
 group_dir="$PACKAGE_DIR/$group"
 
-sha256sum "$group_dir/"* > "$SHA_DIR/$group.sha256"
+sha256sum "$group_dir/"* >> "$SHA_DIR/$group.sha256" 2> /dev/null
 
-#number_of_packs=$(find $group_dir -maxdepth 1 -type f | wc -l)
-#lines_in_sha=$(cat "$SHA_DIR/$group.sha256" | wc -l)
-#echo "$group: $number_of_packs $lines_in_wget"
+# Remove path from file name (Thanks to Greg from sysnet-adventures)
+sed -i -r "s/ .*\/(.+)/  \1/g" $SHA_DIR/$group.sha256  
+
+if [ $? -eq 0 ]
+then
+    echo "Updated $group"
+else
+    echo "Update of $group failed"
+    exit 1
+fi
 
 }
 
 ## Start script
+
+# Read the first argument
 case $SETTING in
 
     "base")
         sha_maker "base"
     ;;
+
     "extra")
         sha_maker "extra"
     ;;
@@ -36,9 +47,18 @@ case $SETTING in
     ;;
 
     "all")
-        sha_maker "base"
-        sha_maker "extra"
-        sha_maker "xorg"
+        for name in "base" "extra" "xorg"
+        do
+            sha_maker $name
+        done
+    ;;
+
+    *)
+        echo "Please enter one of the following options:"
+        echo "'all'"
+        echo "base"
+        echo "extra"
+        echo "xorg"
     ;;
 
 esac

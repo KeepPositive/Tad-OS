@@ -1,6 +1,6 @@
 #! /bin/bash
 
-PACKAGE="diffutils"
+PACKAGE="automake"
 VERSION=$1
 FOLD_NAME="$PACKAGE-$VERSION"
 
@@ -12,10 +12,10 @@ tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
 
 pushd "$FOLD_NAME"
 
-# Prevent errors
-sed -i 's:= @mkdir_p@:= /bin/mkdir -p:' po/Makefile.in.in
+# Prevent a warning
+sed -i 's:/\\\${:/\\\$\\{:' bin/automake.in
 # Configure the source
-./configure --prefix=/usr
+./configure --prefix=/usr --docdir=/usr/share/doc/automake-$VERSION
 # Build using the configured sources
 make -j "$CORES"
 # Install the built package

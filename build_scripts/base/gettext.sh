@@ -9,23 +9,21 @@ if [ -z "$CORES" ]; then
 fi
 
 tar xvf "$PACKAGE_DIR/$FOLD_NAME.tar.xz"
+
 pushd "$FOLD_NAME"
 
 # Configure the source
-cd gettext-tools
-EMACS="no" ./configure --prefix=/tools --disable-shared
-
+./configure --prefix=/usr    \
+            --disable-static \
+            --docdir=/usr/share/doc/gettext-$VERSION
 # Build using the configured sources
-make -C gnulib-lib
-make -C intl pluralx.c
-make -C src msgfmt
-make -C src msgmerge
-make -C src xgettext
-
+make -j "$CORES"
 # Install the built package
 if [ "$INSTALL" -eq 1 ]; then
+    make install
     cp -v src/{msgfmt,msgmerge,xgettext} /tools/bin
 fi
 
 popd
+
 rm -rf "$FOLD_NAME"

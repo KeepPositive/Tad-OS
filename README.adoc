@@ -1,5 +1,5 @@
 = Tad OS
-_The simple OS for people who care about computers and stuff_
+The simple OS for people who care about computers and stuff
 
 This is an in-development Linux-based OS which can be built using Bash build
 scripts. This repo holds those build scripts, sha256 files, etc. needed to build

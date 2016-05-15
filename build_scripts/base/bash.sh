@@ -8,20 +8,25 @@ if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xvf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
+tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
+
 pushd "$FOLD_NAME"
 
+# Apply a patch
+patch -Np1 -i ../bash-4.3.30-upstream_fixes-3.patch
 # Configure the source
-./configure --prefix=/tools --without-bash-malloc
-
+./configure --prefix=/usr                       \
+            --docdir=/usr/share/doc/bash-4.3.30 \
+            --without-bash-malloc               \
+            --with-installed-readline
 # Build using the configured sources
 make -j "$CORES"
-
 # Install the built package
 if [ "$INSTALL" -eq 1 ]; then
     make install
-    ln -sv bash /tools/bin/sh
+    mv -vf /usr/bin/bash /bin
 fi
 
 popd
+
 rm -rf "$FOLD_NAME"

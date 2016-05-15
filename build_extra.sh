@@ -4,7 +4,7 @@
 # script are part of the Tad OS base, but are separated for the sake of
 # SIMPLICITY.
 START_DIR=$(pwd)
-SCRIPT_DIR="$START_DIR/extra"
+SCRIPT_DIR="$START_DIR/build_scripts/extra"
 PACKAGE_DIR="$START_DIR/packs/extra"
 # Configure stuffs here
 INSTALL=0

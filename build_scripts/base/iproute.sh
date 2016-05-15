@@ -1,6 +1,6 @@
 #! /bin/bash
 
-PACKAGE="diffutils"
+PACKAGE="iproute2"
 VERSION=$1
 FOLD_NAME="$PACKAGE-$VERSION"
 
@@ -11,16 +11,17 @@ fi
 tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
 
 pushd "$FOLD_NAME"
-
-# Prevent errors
-sed -i 's:= @mkdir_p@:= /bin/mkdir -p:' po/Makefile.in.in
-# Configure the source
-./configure --prefix=/usr
+#Don't make useless directories
+sed -i /ARPD/d Makefile
+sed -i 's/arpd.8//' man/man8/Makefile
+rm -v doc/arpd.sgml
+sed -i 's/m_ipt.o//' tc/Makefile
 # Build using the configured sources
 make -j "$CORES"
 # Install the built package
-if [ "$INSTALL" -eq 1 ]; then
-    make install
+if [ "$INSTALL" -eq 1 ]
+then
+	make DOCDIR=/usr/share/doc/iproute2-$VERSION install
 fi
 
 popd

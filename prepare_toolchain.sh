@@ -3,9 +3,9 @@
 ## Start variables
 # Some of these variables are editable in the toolchain.cfg file, so check it out
 START_DIR=$(pwd)
-SCRIPT_DIR="$START_DIR/toolchain"
+SCRIPT_DIR="$START_DIR/build_scripts/toolchain"
 PACKAGE_DIR="$START_DIR/packs/base"
-CONFIGURE_FILE="$START_DIR/toolchain/toolchain.cfg"
+CONFIGURE_FILE="$START_DIR/build_scripts/build.cfg"
 LFS=$(grep "LFS" "$CONFIGURE_FILE" | awk '{print $2}')
 LFS_TOOL="$LFS/tools"
 LFS_SRC="$LFS/source"
@@ -65,7 +65,7 @@ then
     echo "Mounting $MOUNT_DEVICE at $LFS"
     mount "$MOUNT_DEVICE" "$LFS"
 else
-    echo "Already mounted $MOUNT_DEVICE!"
+    echo "Already mounted $MOUNT_DEVICE on $LFS!"
 fi
 
 # Make the tools and source directories in LFS
@@ -99,6 +99,7 @@ fi
 
 # Copy build scripts into LFS for the DEFAULT_USER to access
 cp -r "$SCRIPT_DIR" "$LFS"
+cp -r "$START_DIR/build_scripts/base" "$LFS"
 
 # If source file does not exists in LFS_SRC, copy the package there
 for package in $(find "$PACKAGE_DIR" -type f -printf "%f\n")
@@ -110,8 +111,13 @@ do
     fi
 done
 
-# Copy over the second part of the build script to LFS
-cp "$START_DIR/build_toolchain2.sh" "$LFS"
+# Copy over the configuration file
+cp "$START_DIR/build_scripts/build.cfg" "$LFS"
+
+# Copy over the base build script to LFS
+cp "$START_DIR/build_toolchain.sh" "$LFS"
+cp "$START_DIR/prepare_base.sh" "$LFS"
+cp "$START_DIR/build_base"* "$LFS"
 
 # Make bash_profile which sets the default terminal values
 cat > "/home/$DEFAULT_USER/.bash_profile" << 'EOF'

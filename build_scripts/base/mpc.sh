@@ -1,6 +1,6 @@
 #! /bin/bash
 
-PACKAGE="diffutils"
+PACKAGE="mpc"
 VERSION=$1
 FOLD_NAME="$PACKAGE-$VERSION"
 
@@ -11,16 +11,17 @@ fi
 tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
 
 pushd "$FOLD_NAME"
-
-# Prevent errors
-sed -i 's:= @mkdir_p@:= /bin/mkdir -p:' po/Makefile.in.in
 # Configure the source
-./configure --prefix=/usr
+./configure --prefix=/usr    \
+            --disable-static \
+            --docdir=/usr/share/doc/mpc-1.0.3
 # Build using the configured sources
 make -j "$CORES"
+#make -j "$CORES" html
 # Install the built package
 if [ "$INSTALL" -eq 1 ]; then
     make install
+	#make install-html
 fi
 
 popd

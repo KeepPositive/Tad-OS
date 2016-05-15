@@ -1,6 +1,6 @@
 #! /bin/bash
 
-PACKAGE="diffutils"
+PACKAGE="sed"
 VERSION=$1
 FOLD_NAME="$PACKAGE-$VERSION"
 
@@ -12,15 +12,15 @@ tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
 
 pushd "$FOLD_NAME"
 
-# Prevent errors
-sed -i 's:= @mkdir_p@:= /bin/mkdir -p:' po/Makefile.in.in
 # Configure the source
-./configure --prefix=/usr
+./configure --prefix=/usr --bindir=/bin --htmldir=/usr/share/doc/sed-$VERSION
 # Build using the configured sources
 make -j "$CORES"
+#make -j "$CORES" html
 # Install the built package
 if [ "$INSTALL" -eq 1 ]; then
     make install
+    #make -C doc install-html
 fi
 
 popd

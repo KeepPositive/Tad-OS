@@ -3,7 +3,7 @@
 #  This a simple build script which uses sub-scripts to build an X.Org server
 # from scratch, along with all of it's necessary dependencies.
 START_DIR=$(pwd)
-SCRIPT_DIR="$START_DIR/xorg"
+SCRIPT_DIR="$START_DIR/build_scripts/xorg"
 PACKAGE_DIR="$START_DIR/packs/xorg"
 XORG_PREFIX="/usr"
 XORG_CONFIG="--prefix=$XORG_PREFIX --sysconfdir=/etc \

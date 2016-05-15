@@ -12,12 +12,17 @@ tar xvf "$PACKAGE_DIR/$FOLD_NAME.tar.xz"
 pushd "$FOLD_NAME"
 
 # Configure the source
-./configure --prefix=/tools                \
-            --without-python               \
-            --disable-makeinstall-chown    \
-            --without-systemdsystemunitdir \
-            PKG_CONFIG=""
-
+./configure ADJTIME_PATH=/var/lib/hwclock/adjtime       \
+            --docdir=/usr/share/doc/util-linux-$VERSION \
+            --disable-chfn-chsh  \
+            --disable-login      \
+            --disable-nologin    \
+            --disable-su         \
+            --disable-setpriv    \
+            --disable-runuser    \
+            --disable-pylibmount \
+            --disable-static     \
+            --without-python
 # Build using the configured sources
 make -j "$CORES"
 

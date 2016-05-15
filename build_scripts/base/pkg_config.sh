@@ -1,6 +1,6 @@
 #! /bin/bash
 
-PACKAGE="diffutils"
+PACKAGE="pkg-config"
 VERSION=$1
 FOLD_NAME="$PACKAGE-$VERSION"
 
@@ -12,10 +12,12 @@ tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
 
 pushd "$FOLD_NAME"
 
-# Prevent errors
-sed -i 's:= @mkdir_p@:= /bin/mkdir -p:' po/Makefile.in.in
 # Configure the source
-./configure --prefix=/usr
+./configure --prefix=/usr        \
+            --with-internal-glib \
+            --disable-compile-warnings \
+            --disable-host-tool  \
+            --docdir=/usr/share/doc/pkg-config-0.29.1
 # Build using the configured sources
 make -j "$CORES"
 # Install the built package
