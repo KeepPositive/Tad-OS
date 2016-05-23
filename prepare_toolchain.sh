@@ -13,6 +13,9 @@ LFS_SRC="$LFS/source"
 #  This script takes values from the configuration file, and turns them into 
 # usable variables within the script. The names in the beginning of the for
 # loop are all editable values within the toolchain.cfg file.
+
+set -o errexit
+
 for name in "SYSTEM" "MOUNT_DEVICE" "DEFAULT_NAME"
 do
     # The 'eval' command evaluates a string into runable bash
@@ -65,11 +68,11 @@ then
     echo "Mounting $MOUNT_DEVICE at $LFS"
     mount "$MOUNT_DEVICE" "$LFS"
 else
-    echo "Already mounted $MOUNT_DEVICE on $LFS!"
+    echo "$MOUNT_DEVICE is already mounted on $LFS!"
 fi
 
 # Make the tools and source directories in LFS
-for directory in "$LFS_TOOL" "$LFS_SRC" "/home/$DEFAULT_NAME"
+for directory in "$LFS_TOOL" "$LFS_SRC" 
 do
     if [ ! -d "$directory" ]
     then
@@ -82,9 +85,7 @@ printf "Linking " #For style purposes only
 ln -sfv "$LFS_TOOL" /
 
 # Check if the default user exists
-id -u "$DEFAULT_NAME" &> /dev/null
-
-if [ $? -eq 1 ]
+if ! id -u "$DEFAULT_NAME" #&> /dev/null
 then
     echo "Creating user $DEFAULT_NAME in group $DEFAULT_NAME"
     # Create a user and a group which are named lfs
@@ -93,6 +94,7 @@ then
     # Set a password for the lfs user
     echo "Please set a password for the $DEFAULT_NAME user:"
     passwd "$DEFAULT_NAME"
+    mkdir -pv "/home/$DEFAULT_NAME"
 else
     echo "Seems the user $DEFAULT_NAME already exists. Continuing."
 fi
@@ -106,7 +108,7 @@ for package in $(find "$PACKAGE_DIR" -type f -printf "%f\n")
 do
     if [ ! -f "$LFS_SRC/$package" ] 
     then
-        echo "Copying $package to "
+        echo "Copying $package to $LFS_SRC"
         cp "$PACKAGE_DIR/$package" "$LFS_SRC"
     fi
 done
@@ -136,8 +138,14 @@ export LFS LC_ALL LFS_TGT PATH
 EOF
 
 # Change ownership of LFS_TOOL and LFS_SRC
-printf "The "
+for directory in "$LFS_SRC" "$LFS_TOOL" "/home/$DEFAULT_NAME"
+do
+    chown -Rhv "$DEFAULT_NAME" "$directory"
+done
+
 chown -v "$DEFAULT_NAME" "$LFS"
+
+echo "Done. Now run build_toolchain.sh as the $DEFAULT_NAME user in the $LFS directory."
 
 ## End script
 

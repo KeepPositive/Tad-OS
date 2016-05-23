@@ -13,7 +13,7 @@ tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
 pushd "$FOLD_NAME"
 
 # Configure the source
-patch -Np1 -i ../readline-$VERSION-upstream_fixes-3.patch
+patch -Np1 -i "$PACKAGE_DIR/readline-$VERSION-upstream_fixes-3.patch"
 sed -i '/MV.*old/d' Makefile.in
 sed -i '/{OLDSUFF}/c:' support/shlib-install
 ./configure --prefix=/usr    \
@@ -22,7 +22,7 @@ sed -i '/{OLDSUFF}/c:' support/shlib-install
 # Build using the configured sources
 make -j "$CORES" SHLIB_LIBS=-lncurses
 # Install the built package
-if [ "$INSTALL" -eq 1 ]; then
+if [ "$INSTALL_SOURCES" -eq 1 ]; then
     make SHLIB_LIBS=-lncurses install
     mv -v /usr/lib/lib{readline,history}.so.* /lib
     ln -sfv ../../lib/$(readlink /usr/lib/libreadline.so) /usr/lib/libreadline.so

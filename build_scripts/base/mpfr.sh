@@ -1,6 +1,6 @@
 #! /bin/bash
 
-PACKAGE="gmp"
+PACKAGE="mpfr"
 VERSION=$1
 FOLD_NAME="$PACKAGE-$VERSION"
 
@@ -8,7 +8,7 @@ if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
+tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.xz"
 pushd "$FOLD_NAME"
 
 # Configure the source
@@ -20,7 +20,7 @@ pushd "$FOLD_NAME"
 make -j "$CORES"
 #make -j "$CORES" html
 # Install the built package
-if [ "$INSTALL" -eq 1 ]; then
+if [ "$INSTALL_SOURCES" -eq 1 ]; then
     make install
 	#make install-html
 fi

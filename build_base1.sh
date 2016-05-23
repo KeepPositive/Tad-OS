@@ -36,7 +36,8 @@ mkdir -pv /var/{opt,cache,lib/{color,misc,locate,hwclock},local}
 
 # Link a bunch of directories
 case $(uname -m) in
-x86_64) ln -sfv lib /lib64
+"x86_64") 
+        ln -sfv lib /lib64
         ln -sfv lib /usr/lib64
         ln -sfv lib /usr/local/lib64
 ;;
@@ -54,7 +55,7 @@ ln -sfv bash /bin/sh
 ln -sfv /proc/self/mounts /etc/mtab
 
 # Create a password file
-cat > $LFS/etc/passwd << "EOF"
+cat > /etc/passwd << "EOF"
 root:x:0:0:root:/root:/bin/bash
 bin:x:1:1:bin:/dev/null:/bin/false
 daemon:x:6:6:Daemon User:/dev/null:/bin/false

@@ -8,7 +8,7 @@ if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
+tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.xz"
 
 pushd "$FOLD_NAME"
 # Configure the source
@@ -18,7 +18,7 @@ pushd "$FOLD_NAME"
 make -j "$CORES"
 
 # Install the built package
-if [ "$INSTALL" -eq 1 ]; then
+if [ "$INSTALL_SOURCES" -eq 1 ]; then
     make install
 	mv -v /usr/lib/libz.so.* /lib
 	ln -sfv ../../lib/$(readlink /usr/lib/libz.so) /usr/lib/libz.so

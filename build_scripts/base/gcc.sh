@@ -3,7 +3,7 @@
 PACKAGE="gcc"
 VERSION=$1
 FOLD_NAME="$PACKAGE-$VERSION"
-BUILD_DIR="$LFS/$FOLD_NAME/build"
+BUILD_DIR="/$FOLD_NAME/build"
 MPFR_VER=$2
 GMP_VER=$3
 MPC_VER=$4
@@ -46,7 +46,7 @@ esac
 make -j "$CORES"
 
 # Install the built package
-if [ "$INSTALL" -eq 1 ]
+if [ "$INSTALL_SOURCES" -eq 1 ]
 then
     make install
     ln -sv ../usr/bin/cpp /lib

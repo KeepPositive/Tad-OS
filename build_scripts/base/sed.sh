@@ -8,7 +8,7 @@ if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
+tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.bz2"
 
 pushd "$FOLD_NAME"
 
@@ -18,7 +18,7 @@ pushd "$FOLD_NAME"
 make -j "$CORES"
 #make -j "$CORES" html
 # Install the built package
-if [ "$INSTALL" -eq 1 ]; then
+if [ "$INSTALL_SOURCES" -eq 1 ]; then
     make install
     #make -C doc install-html
 fi

@@ -7,7 +7,7 @@ PACKAGE_DIR="$LFS/source"
 TOOL_DIR=/tools
 PATH="$TOOL_DIR/bin":/bin:/usr/bin
 INSTALL=1
-SYSTEM=$(grep "SYSTEM" "$SCRIPT_DIR/toolchain.cfg" | awk '{print $2}')
+SYSTEM=$(grep "SYSTEM" "$SCRIPT_DIR/build.cfg" | awk '{print $2}')
 # Some compression formats
 XZIP=".tar.xz"
 BZIP=".tar.bz2"

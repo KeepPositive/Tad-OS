@@ -8,7 +8,7 @@ if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
+tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.xz"
 
 pushd "$FOLD_NAME"
 #Don't make useless directories
@@ -19,7 +19,7 @@ sed -i 's/m_ipt.o//' tc/Makefile
 # Build using the configured sources
 make -j "$CORES"
 # Install the built package
-if [ "$INSTALL" -eq 1 ]
+if [ "$INSTALL_SOURCES" -eq 1 ]
 then
 	make DOCDIR=/usr/share/doc/iproute2-$VERSION install
 fi

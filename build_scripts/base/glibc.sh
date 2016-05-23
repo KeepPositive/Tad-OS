@@ -6,14 +6,14 @@ FOLD_NAME="$PACKAGE-$VERSION"
 BUILD_DIR="$FOLD_NAME/build"
 # Timezone related variables
 ZONEINFO=/usr/share/zoneinfo
-TZ=$(tzselect)
+TZ=$TIMEZONE
 
 
 if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xvf "$PACKAGE_DIR/$FOLD_NAME.tar.xz"
+tar -xvf "$PACKAGE_DIR/$FOLD_NAME.tar.xz"
 
 pushd "$FOLD_NAME"
 
@@ -34,12 +34,12 @@ pushd "$BUILD_DIR"
 # Build using the configured sources
 make -j "$CORES"
 
-# Install the built package
-if [ "$INSTALL" -eq 1 ]
-then
-    # Prevent an error from occuring by making this file
-    touch /etc/ld.so.conf
+# Prevent an error from occuring by making this file
+touch /etc/ld.so.conf
 
+# Install the built package
+if [ "$INSTALL_SOURCES" -eq 1 ]
+then
     make install
     # According to PiLFS, this symbolic link is needed
     case $SYSTEM in
@@ -98,7 +98,7 @@ then
 EOF
 # ^ Sorry about this. It doesn't notice an indented EOF
 # Install some timezone related things
-    tar -xf ../../tzdata2016d.tar.gz
+    tar -xvf "$PACKAGE_DIR/tzdata2016d.tar.gz"
 
     mkdir -pv $ZONEINFO/{posix,right}
 
@@ -124,7 +124,10 @@ EOF
 	# End /etc/ld.so.conf
 EOF
 
-	mkdir -pv /etc/ld.so.conf.d
+mkdir -pv /etc/ld.so.conf.d
+
+fi
+
 popd
 
 rm -rf "$FOLD_NAME"

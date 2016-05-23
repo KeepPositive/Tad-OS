@@ -13,7 +13,7 @@ tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
 pushd "$FOLD_NAME"
 
 # Apply a patch
-patch -Np1 -i ../bash-4.3.30-upstream_fixes-3.patch
+patch -Np1 -i "$PACKAGE_DIR/bash-4.3.30-upstream_fixes-3.patch"
 # Configure the source
 ./configure --prefix=/usr                       \
             --docdir=/usr/share/doc/bash-4.3.30 \
@@ -22,7 +22,7 @@ patch -Np1 -i ../bash-4.3.30-upstream_fixes-3.patch
 # Build using the configured sources
 make -j "$CORES"
 # Install the built package
-if [ "$INSTALL" -eq 1 ]; then
+if [ "$INSTALL_SOURCES" -eq 1 ]; then
     make install
     mv -vf /usr/bin/bash /bin
 fi

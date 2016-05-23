@@ -16,7 +16,7 @@ PKG_CONFIG_PATH=/tools/lib/pkgconfig ./configure --prefix=/usr
 # Build using the configured sources
 make -j "$CORES"
 # Install the built package
-if [ "$INSTALL" -eq 1 ]; then
+if [ "$INSTALL_SOURCES" -eq 1 ]; then
     make install
 fi
 

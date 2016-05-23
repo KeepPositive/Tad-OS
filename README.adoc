@@ -1,11 +1,13 @@
 = Tad OS
+
 The simple OS for people who care about computers and stuff
 
-This is an in-development Linux-based OS which can be built using Bash build
-scripts. This repo holds those build scripts, sha256 files, etc. needed to build
-your own Tad OS. It can be built and run well on a large variety of systems.
+This is an actively developed Linux-based OS which can be built using Bash build
+scripts. This repo holds those build scripts, sha256 hashes, etc. needed to build
+your own Tad OS. 
 
 == System Compatibility
+
 Theoretically, this build system will work on any CPU that is supported by the
 GNU Compiler and the Linux kernel. Some may need some minor patches. But if you
 want to build Tad OS, please make sure your system is supported. The below CPUs
@@ -13,35 +15,16 @@ types have been tested so far:
 + arm7l (Tested on a Raspberry Pi 3, which has a Broadcom BCM2837)
 + x86_64 (Tested using an AMD FX-9370)
 
-== How to Build Tad OS
-Tad OS is built using a series of bash build scripts split into different
-groups. Currently, you can start a build of Tad OS using the following commands:
+== Usage
 
-```
-$ git clone https://github.com/KeepPositive/Tad-OS
-$ cd Tad-OS
-$ bash get_packages.sh base
-```
+To understand how to use the Tad OS build script, please check out the 
+link:MANUAL.adoc[documentation]
 
-Now, you can configure your install by editing your 'toolchain.cfg' in the
-toolchain directory. Here, set the partition you would like to mount and build
-the system on. There are also some other useful variables, but this is the only
-line you need to edit. Now, run the starting build script as the root user:
+== Contribution & Changes
 
-```
-# bash build_toolchain1.sh
-```
+If you are unhappy with the way something works, or if you think a comment is
+oddly worded, etc., don't fret. You can 
+mailto:tmoseley1106@gmail.com[shoot me an email] 
+or you can post an issue on the 
+https://github.com/KeepPositive/Tad-OS[Tad OS Github repo].
 
-This script will set up all of the variables for the default user, whose name
-was set in the toolchain.cfg file. Now, sign in as the default_user and run the
-second build script:
-
-```
-# su - [USER_NAME]
-$ cd [MOUNT_DIR]
-$ bash build_toolchain2.sh
-```
-
-And let it run. Depending on your system, this may take an hour to about six
-hours. Sadly, the base system scripts are not ready yet, so you're going to
-have to wait.

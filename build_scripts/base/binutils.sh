@@ -3,7 +3,7 @@
 PACKAGE="binutils"
 VERSION=$1
 FOLD_NAME="$PACKAGE-$VERSION"
-BUILD_DIR="$LFS/$FOLD_NAME/build"
+BUILD_DIR="/$FOLD_NAME/build"
 
 if [ -z "$CORES" ]; then
 	CORES='4'
@@ -28,13 +28,8 @@ pushd "$BUILD_DIR"
 # Build using the configured sources
 make tooldir=/usr -j "$CORES"
 # Install the built package
-if [ "$INSTALL" -eq 1 ]
+if [ "$INSTALL_SOURCES" -eq 1 ]
 then
-    case $(uname -m) in
-        x86_64) mkdir -v /tools/lib
-                ln -sv lib /tools/lib64
-        ;;
-    esac
     make tooldir=/usr install
 fi
 # Exit the build dir

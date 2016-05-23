@@ -15,7 +15,7 @@ pushd "$FOLD_NAME"
 make mrproper
 
 # Install the built package
-if [ "$INSTALL" -eq 1 ]
+if [ "$INSTALL_SOURCES" -eq 1 ]
 then
     make INSTALL_HDR_PATH=dest headers_install
     find dest/include \( -name .install -o -name ..install.cmd \) -delete

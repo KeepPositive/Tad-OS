@@ -2,6 +2,8 @@
 
 ## Start variables
 START_DIR=$(pwd)
+PACKAGE_DIR="/source"
+SCRIPT_DIR="/base"
 CONFIGURE_FILE="$START_DIR/build.cfg"
 for name in "LFS" "TIMEZONE"
 do
@@ -14,6 +16,11 @@ do
         exit 1
     fi
 done
+
+# Set common package compression extensions
+GZIP=".tar.gz"
+BZIP=".tar.bz2"
+XZIP=".tar.xz"
 ## End variables
 
 ## Start script
@@ -23,31 +30,31 @@ set -o errexit
 
 # Continue building packages!
 # bc
-source "$SCRIPT_DIR/bc.sh" "1.06.95"
+#source "$SCRIPT_DIR/bc.sh" "1.06.95"
 # Libtool
-source "$SCRIPT_DIR/std_build.sh" "libtool" "2.4.6"
+#source "$SCRIPT_DIR/std_build.sh" "libtool" "2.4.6" "$XZIP"
 # GDBM
-source "$SCRIPT_DIR/gdbm.sh" "1.11"
+#source "$SCRIPT_DIR/gdbm.sh" "1.11"
 # Gperf
-source "$SCRIPT_DIR/gperf.sh" "3.0.4"
+#source "$SCRIPT_DIR/gperf.sh" "3.0.4"
 # Expat
-source "$SCRIPT_DIR/expat.sh" "2.1.1"
+#source "$SCRIPT_DIR/expat.sh" "2.1.1"
 # Inetutils
-source "$SCRIPT_DIR/inetutils.sh" "1.9.4"
+#source "$SCRIPT_DIR/inetutils.sh" "1.9.4"
 # Perl
-source "$SCRIPT_DIR/perl.sh" "5.22.1"
+#source "$SCRIPT_DIR/perl.sh" "5.22.1"
 # XML-Parser
-source "$SCRIPT_DIR/xml_parser.sh" "2.44"
+#source "$SCRIPT_DIR/xml_parser.sh" "2.44"
 # Intltool
-source "$SCRIPT_DIR/intltool.sh" "0.51.0"
+#source "$SCRIPT_DIR/intltool.sh" "0.51.0"
 # autoconf
-source "$SCRIPT_DIR/std_build.sh" "autoconf" "2.69"
+#source "$SCRIPT_DIR/std_build.sh" "autoconf" "2.69" "$XZIP"
 # automake
-source "$SCRIPT_DIR/automake.sh" "1.15"
+#source "$SCRIPT_DIR/automake.sh" "1.15"
 # xz
-source "$SCRIPT_DIR/xz.sh" "5.2.2"
+#source "$SCRIPT_DIR/xz.sh" "5.2.2"
 # kmod
-source "$SCRIPT_DIR/kmod.sh" "22"
+#source "$SCRIPT_DIR/kmod.sh" "22"
 # gettext
 source "$SCRIPT_DIR/gettext.sh" "0.19.7"
 # systemd
@@ -79,9 +86,9 @@ source "$SCRIPT_DIR/ksb.sh" "2.0.3"
 # libpipeline
 source "$SCRIPT_DIR/libpipeline.sh" "1.4.1"
 # Make (HA!)
-source "$SCRIPT_DIR/std_build.sh" "make" "4.1"
+source "$SCRIPT_DIR/std_build.sh" "make" "4.1" "$BZIP"
 # patch
-source "$SCRIPT_DIR/std_build.sh" "patch" "2.7.5"
+source "$SCRIPT_DIR/std_build.sh" "patch" "2.7.5" "$XZIP"
 # d-bus
 source "$SCRIPT_DIR/dbus.sh" "1.10.6"
 # util-linux

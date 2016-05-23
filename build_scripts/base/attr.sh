@@ -8,7 +8,7 @@ if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
+tar xf "$PACKAGE_DIR/$FOLD_NAME.src.tar.gz"
 
 pushd "$FOLD_NAME"
 
@@ -20,7 +20,7 @@ sed -i -e "/SUBDIRS/s|man[25]||g" man/Makefile
 make -j "$CORES"
 
 # Install the built package
-if [ "$INSTALL" -eq 1 ]; then
+if [ "$INSTALL_SOURCES" -eq 1 ]; then
     make install install-dev install-lib
     chmod -v 755 /usr/lib/libattr.so
     mv -v /usr/lib/libattr.so.* /lib

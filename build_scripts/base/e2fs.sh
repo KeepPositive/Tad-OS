@@ -31,7 +31,7 @@ PKG_CONFIG_PATH=/tools/lib/pkgconfig \
 # Build using the configured sources
 make -j "$CORES"
 # Install the built package
-if [ "$INSTALL" -eq 1 ]; then
+if [ "$INSTALL_SOURCES" -eq 1 ]; then
     make install
     make install-libs
     chmod -v u+w /usr/lib/{libcom_err,libe2p,libext2fs,libss}.a

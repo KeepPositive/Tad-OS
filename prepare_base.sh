@@ -21,24 +21,27 @@ done
 # Exit on errors
 set -o errexit
 
+# Change the ownership of everything back to the root user
+chown -R root:root $LFS/tools
+
 # Make some directories so the toolchain can run
 mkdir -pv $LFS/{dev,proc,sys,run}
 
 # Populate the console and null files
-mknod -m 600 $LFS/dev/console c 5 1
-mknod -m 666 $LFS/dev/null c 1 3
+mknod -m 600 "$LFS/dev/console" c 5 1
+mknod -m 666 "$LFS/dev/null" c 1 3
 
 # mount the directories created earlier
-mount -v --bind /dev $LFS/dev
-mount -vt devpts devpts $LFS/dev/pts -o gid=5,mode=620
-mount -vt proc proc $LFS/proc
-mount -vt sysfs sysfs $LFS/sys
-mount -vt tmpfs tmpfs $LFS/run
+mount -v --bind /dev "$LFS/dev"
+mount -vt devpts devpts "$LFS/dev/pts" -o gid=5,mode=620
+mount -vt proc proc "$LFS/proc"
+mount -vt sysfs sysfs "$LFS/sys"
+mount -vt tmpfs tmpfs "$LFS/run"
 
 # Create some symlink to prevent errors later on.
-if [ -h $LFS/dev/shm ]
+if [ -h "$LFS/dev/shm" ]
 then
-    mkdir -pv $LFS/$(readlink $LFS/dev/shm)
+    mkdir -pv "$LFS/$(readlink "$LFS/dev/shm")"
 fi
 
 # Change to the toolchain system

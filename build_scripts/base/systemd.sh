@@ -8,7 +8,7 @@ if [ -z "$CORES" ]; then
 	CORES='4'
 fi
 
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
+tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.xz"
 
 pushd "$FOLD_NAME"
 
@@ -48,7 +48,7 @@ EOF
 # Build using the configured sources
 make -j "$CORES" LIBRARY_PATH=/tools/lib
 # Install the built package
-if [ "$INSTALL" -eq 1 ]; then
+if [ "$INSTALL_SOURCES" -eq 1 ]; then
     make LD_LIBRARY_PATH=/tools/lib install
     mv -v /usr/lib/libnss_{myhostname,mymachines,resolve}.so.2 /lib
     # Remove dumb RPM package manager support

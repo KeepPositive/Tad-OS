@@ -23,7 +23,9 @@ pushd "$FOLD_NAME"
 make -j "$CORES"
 
 # Install the built package
-if [ "$INSTALL" -eq 1 ]; then
+INSTALL="$INSTALL_SOURCES"
+if [ "$INSTALL_SOURCES" -eq 1 ]
+then
     make install
 fi
 
