@@ -4,7 +4,7 @@ The simple OS for people who care about computers and stuff
 
 This is an actively developed Linux-based OS which can be built using Bash build
 scripts. This repo holds those build scripts, sha256 hashes, etc. needed to build
-your own Tad OS. 
+your own Tad OS.
 
 == System Compatibility
 
@@ -17,14 +17,12 @@ types have been tested so far:
 
 == Usage
 
-To understand how to use the Tad OS build script, please check out the 
+To understand how to use the Tad OS build script, please check out the
 link:MANUAL.adoc[documentation]
 
 == Contribution & Changes
 
 If you are unhappy with the way something works, or if you think a comment is
-oddly worded, etc., don't fret. You can 
-mailto:tmoseley1106@gmail.com[shoot me an email] 
-or you can post an issue on the 
-https://github.com/KeepPositive/Tad-OS[Tad OS Github repo].
-
+oddly worded, etc., don't fret. You can
+mailto:tmoseley1106@gmail.com[shoot me an email]
+or you can post an issue here on the Tad OS repo.
