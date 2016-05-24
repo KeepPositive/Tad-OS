@@ -12,8 +12,8 @@ Theoretically, this build system will work on any CPU that is supported by the
 GNU Compiler and the Linux kernel. Some may need some minor patches. But if you
 want to build Tad OS, please make sure your system is supported. The below CPUs
 types have been tested so far:
-+ arm7l (Tested on a Raspberry Pi 3, which has a Broadcom BCM2837)
-+ x86_64 (Tested using an AMD FX-9370)
+* arm7l (Tested on a Raspberry Pi 3, powered by a Broadcom BCM2837)
+* x86_64 (Tested using an AMD FX-9370)
 
 == Usage
 

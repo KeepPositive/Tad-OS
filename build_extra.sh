@@ -14,31 +14,29 @@ CORES=$(grep -c ^processor /proc/cpuinfo)
 
 echo "Building extra tools"
 sleep 5
-# build which
-#source "$SCRIPT_DIR/which.sh" "2.21"
-# build openssl
+
+# Build some nice packages!
+# openssl
 source "$SCRIPT_DIR/openssl.sh" "1.0.2g"
-# build pcre
+# pcre
 source "$SCRIPT_DIR/pcre.sh" "8.38"
-# build wget
+# wget
 source "$SCRIPT_DIR/wget.sh" "1.17.1"
 # run certificate scripts here
 # Not yet though!
-# build curl
+# curl
 source "$SCRIPT_DIR/curl.sh" "7_48_0"
-# build libffi
+# libffi
 source "$SCRIPT_DIR/libffi.sh" "3.2.1"
-# build python2
+# python2
 source "$SCRIPT_DIR/python2.sh" "2.7.11"
-# build libxml2
+# libxml2
 source "$SCRIPT_DIR/libxml2.sh" "2.9.3"
-# build asciidoc
-source "$SCRIPT_DIR/asciidoc.sh" "8.6.9"
-# build p7zip
+# p7zip
 source "$SCRIPT_DIR/p7zip.sh" "15.14.1"
-# build git
+# git
 source "$SCRIPT_DIR/git.sh" "2.8.0"
-# build cmake
+# cmake
 source "$SCRIPT_DIR/cmake.sh" "3.5.2"
 
 ## End script

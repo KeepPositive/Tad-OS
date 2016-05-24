@@ -1,8 +1,8 @@
 = How to Use The Tad OS Build Scripts
 Ted Moseley <tmoseley1106@gmail.com>
 
-WARNING: These scripts could very easily destroy your host system if you are running
-these scripts on a native GNU/Linux install. You have been warned.
+WARNING: These scripts could very easily destroy your host system if you are
+running these scripts on a native GNU/Linux install. You have been warned.
 
 == Introduction
 
@@ -19,13 +19,22 @@ and build everything from source code. These scripts also automate Linux from
 Scrath much more than your average build script, so they require very little
 work, and you do not need much knowledge of GNU/Linux to use them.
 
-== Downloading Source Code
+== Building Tad OS
 
-The easiest way to download source code is use the ``get_packages.sh`` script.
-This script automates the wget download AND the sha256 checksum processes for
-each package required. It has an assortment of arguments that can be passed to
-it, but for now we will just download all of the sources needed for a full
-Tad-OS installation.
+=== Downloading
+
+First things first, you are going to want to clone the repo:
+
+```
+$ git clone https://github.com/KeepPositive/Tad-OS.git
+$ cd Tad-OS/
+```
+
+Now, the easiest way to download the source code you need is to use the
+``get_packages.sh`` script. This script automates the wget download AND the
+sha256 checksum processes for each package required. It has an assortment of
+arguments that can be passed to it, but for now we will just download all of
+the sources needed for a full Tad-OS installation.
 
 TIP: Commands starting with a "$" indicate that the command should be run by a
 normal user, while commands starting with a "#" should be run by the root user.
@@ -34,7 +43,7 @@ normal user, while commands starting with a "#" should be run by the root user.
 $ bash get_packages.sh all
 ```
 
-== Editing the 'build.cfg' File
+=== Editing 'build.cfg'
 
 Before any building can occur, you need to edit the ``build.cfg`` file. This
 is an extremely simple file which allows the user to set some major variables
@@ -44,20 +53,35 @@ find out what you need to change.
 TIP: Wherever you see a command with words in [SQUARE BRACKETS], insert whatever
 is set in you build.cfg
 
-== Builing the Toolchain
+=== Toolchain
 
 In order to build the toolchain (similar to chapter 6 in the LFS book) you are
 going to use two build scripts: ``prepare_toolchain.sh`` and
 ``build_toolchain.sh``. These scripts use packages from the base group and
 create a small GNU/Linux system (AKA a *toolchain*) to create a clean base
-system.
+system. The ``build_toolchain.sh`` script may take some time depending on your
+processor speed. Go get a glass of water or something.
 
 ```
 # bash prepare_toolchain.sh
-# su - [DEFAULT_USER]
+$ su - [DEFAULT_USER]
 $ cd [LFS]
 $ bash build_toolchain.sh
+$ exit
 ```
 
-This may take some time depending on your processor speed. Go get a glass of
-water or something.
+=== Base
+
+Now that is complete, it is time to change root into the toolchain and build
+the base system. This will also take quite a bit of time.
+
+```
+# bash prepare_base.sh
+$ bash build_base1.sh
+$ bash build_base2.sh
+$ bash build_base3.sh
+```
+
+=== Finishing Up
+
+This is still yet to be decided.
