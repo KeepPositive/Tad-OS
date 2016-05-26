@@ -55,6 +55,7 @@ http://downloads.sourceforge.net/project/psmisc/psmisc/psmisc-22.21.tar.gz
 http://ftp.gnu.org/gnu/readline/readline-6.3.tar.gz
 http://ftp.gnu.org/gnu/sed/sed-4.2.2.tar.bz2
 http://pkg-shadow.alioth.debian.org/releases/shadow-4.2.1.tar.xz
+http://www.sudo.ws/dist/sudo-1.8.16.tar.gz
 http://anduin.linuxfromscratch.org/sources/other/systemd/systemd-229.tar.xz
 http://ftp.gnu.org/gnu/tar/tar-1.28.tar.xz
 http://sourceforge.net/projects/tcl/files/Tcl/8.6.5/tcl-core8.6.5-src.tar.gz
@@ -67,9 +68,6 @@ http://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-2.44.tar.gz
 http://tukaani.org/xz/xz-5.2.2.tar.xz
 http://www.zlib.net/zlib-1.2.8.tar.xz
 
-https://github.com/raspberrypi/linux/archive/rpi-4.4.y.tar.gz
-https://github.com/raspberrypi/firmware/archive/master.tar.gz
-
 http://www.linuxfromscratch.org/patches/lfs/systemd/bash-4.3.30-upstream_fixes-3.patch
 http://www.linuxfromscratch.org/patches/lfs/systemd/bc-1.06.95-memory_leak-1.patch
 http://www.linuxfromscratch.org/patches/lfs/systemd/binutils-2.26-upstream_fixes-3.patch
@@ -80,5 +78,8 @@ http://www.linuxfromscratch.org/patches/lfs/systemd/glibc-2.23-upstream_fixes-1.
 http://www.linuxfromscratch.org/patches/lfs/systemd/kbd-2.0.3-backspace-1.patch
 http://www.linuxfromscratch.org/patches/lfs/systemd/readline-6.3-upstream_fixes-3.patch
 http://www.linuxfromscratch.org/patches/lfs/systemd/systemd-229-compat-1.patch
+
+https://github.com/raspberrypi/linux/archive/rpi-4.4.y.tar.gz
+https://github.com/raspberrypi/firmware/archive/master.tar.gz
 
 http://www.intestinate.com/pilfs/patches/gcc-5.3.0-rpi3-cpu-default.patch
