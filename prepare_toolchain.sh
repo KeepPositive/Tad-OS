@@ -13,9 +13,6 @@ LFS_SRC="$LFS/source"
 #  This script takes values from the configuration file, and turns them into 
 # usable variables within the script. The names in the beginning of the for
 # loop are all editable values within the toolchain.cfg file.
-
-set -o errexit
-
 for name in "SYSTEM" "MOUNT_DEVICE" "DEFAULT_NAME"
 do
     # The 'eval' command evaluates a string into runable bash
@@ -85,7 +82,7 @@ printf "Linking " #For style purposes only
 ln -sfv "$LFS_TOOL" /
 
 # Check if the default user exists
-if ! id -u "$DEFAULT_NAME" #&> /dev/null
+if ! id -u "$DEFAULT_NAME" &> /dev/null
 then
     echo "Creating user $DEFAULT_NAME in group $DEFAULT_NAME"
     # Create a user and a group which are named lfs
@@ -122,28 +119,32 @@ cp "$START_DIR/prepare_base.sh" "$LFS"
 cp "$START_DIR/build_base"* "$LFS"
 
 # Make bash_profile which sets the default terminal values
-cat > "/home/$DEFAULT_USER/.bash_profile" << 'EOF'
-exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash
-EOF
+if [ ! -f /home/"$DEFAULT_NAME"/.bash_profile ]
+then
+    printf "exec env -i HOME=/home/$DEFAULT_NAME TERM=linux PS1='\u:\w\$ ' /bin/bash\n\n" \
+           >> /home/"$DEFAULT_NAME"/.bash_profile
+
+    echo "Created bash_profile for $DEFAULT_NAME"
+
+fi
 
 # Make bashrc which defines environment variables for programs to use.
-cat > "/home/$DEFAULT_USER/.bashrc" << EOF
-set +h
-umask 022
-LFS=$LFS
-LC_ALL=POSIX
-LFS_TGT=$LFS_TGT
-PATH=/tools/bin:/bin:/usr/bin
-export LFS LC_ALL LFS_TGT PATH
-EOF
+if [ ! -f /home/"$DEFAULT_NAME"/.bashrc ]
+then
+
+    printf "set +h\numask 022\nLFS=$LFS\nLC_ALL=POSIX\nLFS_TGT=$LFS_TGT\nPATH=/tools/bin:/bin:/usr/bin\nexport LFS LC_ALL LFS_TGT PATH\n" \
+           >> /home/"$DEFAULT_NAME"/.bashrc
+
+    echo "Created bashrc for $DEFAULT_NAME"
+fi
 
 # Change ownership of LFS_TOOL and LFS_SRC
 for directory in "$LFS_SRC" "$LFS_TOOL" "/home/$DEFAULT_NAME"
 do
-    chown -Rhv "$DEFAULT_NAME" "$directory"
+    chown -Rhc "$DEFAULT_NAME:$DEFAULT_NAME" "$directory"
 done
 
-chown -v "$DEFAULT_NAME" "$LFS"
+chown -c "$DEFAULT_NAME:$DEFAULT_NAME" "$LFS"
 
 echo "Done. Now run build_toolchain.sh as the $DEFAULT_NAME user in the $LFS directory."
 

@@ -15,7 +15,7 @@ pushd "$FOLD_NAME"
 # Prevent an error
 sed -i "s:blkid/::" $(grep -rl "blkid/blkid.h")
 # Apply a patch
-patch -Np1 -i "../systemd-$VERSION-compat-1.patch"
+patch -Np1 -i "$PACKAGE_DIR/systemd-$VERSION-compat-1.patch"
 # Rebuild some edited files
 autoreconf -fi
 # Make a file

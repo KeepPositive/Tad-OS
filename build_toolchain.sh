@@ -2,12 +2,26 @@
 
 ## Start variables
 
+CONFIGURE_FILE="./build.cfg"
+
+# Get some variables from build.cfg
+for name in "LFS" "SYSTEM"
+do
+    # The 'eval' command evaluates a string into runable bash
+    eval "export $name=$(grep $name "$CONFIGURE_FILE" | awk '{print $2}')"
+
+    if [ "$?" -ne 0 ]
+    then
+        echo "$name could not be created! Error!"
+        exit 1
+    fi
+done
+
 SCRIPT_DIR="$LFS/toolchain"
 PACKAGE_DIR="$LFS/source"
 TOOL_DIR=/tools
 PATH="$TOOL_DIR/bin":/bin:/usr/bin
 INSTALL=1
-SYSTEM=$(grep "SYSTEM" "$SCRIPT_DIR/build.cfg" | awk '{print $2}')
 # Some compression formats
 XZIP=".tar.xz"
 BZIP=".tar.bz2"
@@ -29,7 +43,7 @@ case $SYSTEM in
 ;;
 
 *)
-    source "$SCRIPT_DIR/linux-headers.sh" "4.5.2"
+    source "$SCRIPT_DIR/linux-headers.sh" "4.6"
 ;;
 esac
 

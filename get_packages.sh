@@ -9,7 +9,12 @@ WGET_DIR="$START_DIR/wget"
 PACKAGE_DIR="$START_DIR/packs"
 SETTING=$1
 
-get_group() {
+checksum_check ()
+{
+    echo "Checking":wq
+}
+
+get_group () {
     # The xorg group which will be downloaded
     download_type=$1
     sha_file="$START_DIR/sha256/$download_type.sha256"
@@ -41,7 +46,7 @@ get_group() {
     popd > /dev/null
 }
 
-get_xorg_group() {
+get_xorg_group () {
 
     download_type=$1
     # X.Org groups are installed inside a folder with the 'xorg' folder
@@ -83,9 +88,17 @@ get_xorg_group() {
 }
 
 ## Start script
-
+# Create the PACKAGE_DIR directory if it does not exist
 if [ ! -d "$PACKAGE_DIR" ]; then
     mkdir "$PACKAGE_DIR"
+fi
+# Check if wget is installed
+which wget 2> /dev/null
+
+if [ $? -ne 0 ]
+then
+    echo "'wget' is not installed! Please install if you wish to continue."
+    exit 1
 fi
 
 # Pass an argument to the script so it can be searched here.
@@ -133,7 +146,7 @@ case $SETTING in
     *) # Print a help  message if you enter an invalid argument
     echo "You should enter one of the following:"
     printf "\t'all': download all package groups\n"
-    printf "\t'base': the packages need to build a base Tad OS system (Use for toolchain too)\n"
+    printf "\t'base': the packages need to build a base Tad OS system\n"
     printf "\t'extra': extra tools for building, like CMake and Git\n"
     printf "\t'xorg': libraries and tools necessary for GUIs\n"
     printf "\t'xorg-*': sub-groups for xorg: 'proto', 'lib', 'app' and 'font'\n"
