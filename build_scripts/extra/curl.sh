@@ -4,8 +4,9 @@ PACKAGE=curl
 VERSION=$1
 FOLD_NAME=curl-curl-$VERSION
 
-if [ -z $CORES]; then
-	CORES = '4'
+if [ -z $CORES]
+then
+	CORES=4
 fi
 
 tar xf $PACKAGE_DIR/curl-$VERSION.tar.gz
@@ -19,7 +20,8 @@ pushd $FOLD_NAME
 # Build using the configured sources
 make -j $CORES
 # Install the built package
-if [ $INSTALL -eq 1 ]; then
+if [ $INSTALL -eq 1 ]
+then
     make install
     cp -a docs docs-save
     rm -rf docs/examples/.deps
@@ -32,7 +34,9 @@ if [ $INSTALL -eq 1 ]; then
     cp -v -R docs/* /usr/share/doc/curl-$VERSION
     rm -rf docs
     mv -i docs-save doc
-
-    popd
-    rm -rf $FOLD_NAME
 fi
+
+popd
+
+rm -rf $FOLD_NAME
+

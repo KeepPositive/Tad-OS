@@ -44,7 +44,7 @@ then
     # According to PiLFS, this symbolic link is needed
     case $SYSTEM in
     "rpi")
-        ln -sfv ld-2.23.so "$LFS/tools/lib/ld-linux.so.3"
+        ln -sfv ld-2.23.so "/tools/lib/ld-linux.so.3"
     ;;
     esac
     # Make some configuration stuff

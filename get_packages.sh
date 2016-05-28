@@ -11,7 +11,7 @@ SETTING=$1
 
 checksum_check ()
 {
-    echo "Checking":wq
+    echo "Checking"
 }
 
 get_group () {
@@ -87,13 +87,30 @@ get_xorg_group () {
     popd > /dev/null
 }
 
+print_help_message () {
+    
+    for help_string in                                           \
+    "get_packages accepts the following arguments:"              \
+    "\tall\t\tDownload all package groups"                       \
+    "\tbase\t\tPackages need to build a base Tad OS system"      \
+    "\tdesktop\t\tPackages for the Openbox desktop"              \
+    "\textra\t\tExtra tools for building and programming"        \
+    "\thelp\t\tPrint this help message"                          \
+    "\txorg\t\tLibraries and tools necessary for GUIs"           \
+    "\txorg-*\t\tSub-groups for xorg: proto, lib, app and font"
+    do
+        echo -e "$help_string"
+    done
+}
+
 ## Start script
 # Create the PACKAGE_DIR directory if it does not exist
-if [ ! -d "$PACKAGE_DIR" ]; then
+if [ ! -d "$PACKAGE_DIR" ]
+then
     mkdir "$PACKAGE_DIR"
 fi
 # Check if wget is installed
-which wget 2> /dev/null
+which wget &> /dev/null
 
 if [ $? -ne 0 ]
 then
@@ -103,55 +120,43 @@ fi
 
 # Pass an argument to the script so it can be searched here.
 case $SETTING in
+"all")
+    #for group in "desktop" "extra" "xorg"
+    for group in $(find $WGET_DIR -type f -printf "%f\n")
+    do
+        group_name=${group%.*}
+        #echo "$group_name"
+        get_group $group_name
+    done
 
-    "base")
-        get_group "base"
-    ;;
-    "extra")
-        get_group "extra"
-    ;;
+    for group in "proto" "lib" "app" "font"
+    do
+        get_xorg_group $group
+    done
+;;
 
-    "xorg")
-        get_group "xorg"
-    ;;
+"xorg-"*)
+    xorg_type=$(echo $SETTING | cut -c 6-)
+    echo "Found $SETTING"
+    get_xorg_group "$xorg_type"
+;;
 
-    "xorg-proto")
-        get_xorg_group "proto"
-    ;;
+"help")
+    print_help_message
+;;
 
-    "xorg-lib")
-        get_xorg_group "lib"
-    ;;
-
-    "xorg-app")
-        get_xorg_group "app"
-    ;;
-
-    "xorg-font")
-        get_xorg_group "font"
-    ;;
-
-    "all")
-        for group in "extra" "xorg"
-        do
-            get_group $group
-        done
-
-        for group in "proto" "lib" "app" "font"
-        do
-            get_xorg_group $group
-        done
-    ;;
-
-    *) # Print a help  message if you enter an invalid argument
-    echo "You should enter one of the following:"
-    printf "\t'all': download all package groups\n"
-    printf "\t'base': the packages need to build a base Tad OS system\n"
-    printf "\t'extra': extra tools for building, like CMake and Git\n"
-    printf "\t'xorg': libraries and tools necessary for GUIs\n"
-    printf "\t'xorg-*': sub-groups for xorg: 'proto', 'lib', 'app' and 'font'\n"
-    ;;
-
+*) # Print a help  message if you enter an invalid argument
+    
+    WGET_PATH="$WGET_DIR/$SETTING.wget"
+    
+    if [ -f "$WGET_PATH" ]
+    then
+        get_group "$SETTING"
+    else
+        echo -e "File $WGET_PATH does not exist!\n"
+        print_help_message
+    fi
+;;
 esac
 
 ## End script

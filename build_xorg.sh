@@ -36,7 +36,7 @@ source "$SCRIPT_DIR/libxcb.sh" "1.11.1"
 source "$SCRIPT_DIR/libpng.sh" "1.6.21"
 # build FreeType
 source "$SCRIPT_DIR/freetype.sh" "2.6.3"
-# build elfutils (a glib optinal dependency, but needed for Mesa later)
+# build elfutils (a glib optional dependency, but needed for Mesa later)
 source "$SCRIPT_DIR/elfutils.sh" "0.166"
 # build GLib
 source "$SCRIPT_DIR/glib.sh" "2.48.0"

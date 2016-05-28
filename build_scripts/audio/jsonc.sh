@@ -1,7 +1,7 @@
 #! /bin/bash
 
 ## Start variables
-PACKAGE=""
+PACKAGE="json-c"
 VERSION=$1
 FOLD_NAME="$PACKAGE-$VERSION"
 
@@ -17,9 +17,10 @@ tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
 pushd "$FOLD_NAME"
 
 # Configure the source
-
+sed -i s/-Werror// Makefile.in
+./configure --prefix=/usr --disable-static
 # Build using the configured sources
-make -j "$CORES"
+make -j 1
 # Install the built package
 if [ "$INSTALL" -eq 1 ]
 then

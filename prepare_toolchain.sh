@@ -26,9 +26,8 @@ do
 done
 
 case "$SYSTEM" in
-
     "rpi")
-        # Specifically for the Raspberry Pi 3
+        # Specifically for the Raspberry Pi
         LFS_TGT=$(uname -m)-lfs-linux-gnueabihf
     ;;
 
@@ -36,7 +35,6 @@ case "$SYSTEM" in
         # For a standard 32 bit or 64 bit computer
         LFS_TGT=$(uname -m)-lfs-linux-gnu
     ;;
-
 esac
 
 ## End variables
@@ -138,14 +136,19 @@ then
     echo "Created bashrc for $DEFAULT_NAME"
 fi
 
-# Change ownership of LFS_TOOL and LFS_SRC
+# Change ownership of the LFS directory itself
+chown -c "$DEFAULT_NAME:$DEFAULT_NAME" "$LFS"
+
+# Change ownership of directories recursively
 for directory in "$LFS_SRC" "$LFS_TOOL" "/home/$DEFAULT_NAME"
 do
     chown -Rhc "$DEFAULT_NAME:$DEFAULT_NAME" "$directory"
 done
 
-chown -c "$DEFAULT_NAME:$DEFAULT_NAME" "$LFS"
+# Change the ownership of the scripts
+chown -c "$DEFAULT_NAME:$DEFAULT_NAME" "$LFS"/*.sh
 
+# Ready to continue message 
 echo "Done. Now run build_toolchain.sh as the $DEFAULT_NAME user in the $LFS directory."
 
 ## End script

@@ -1,4 +1,3 @@
-http://sourceforge.net/projects/asciidoc/files/asciidoc/8.6.9/asciidoc-8.6.9.tar.gz
 https://cmake.org/files/v3.5/cmake-3.5.2.tar.gz
 https://github.com/curl/curl/archive/curl-7_48_0.tar.gz
 https://www.kernel.org/pub/software/scm/git/git-2.8.0.tar.xz
@@ -9,6 +8,11 @@ ftp://lynx.isc.org/lynx/tarballs/lynx2.8.8rel.2.tar.bz2
 https://www.openssl.org/source/openssl-1.0.2h.tar.gz
 http://pilotfiber.dl.sourceforge.net/project/p7zip/p7zip/15.14.1/p7zip_15.14.1_src_all.tar.bz2
 ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.38.tar.bz2
-http://www.linuxfromscratch.org/patches/blfs/svn/pcre-8.38-upstream_fixes-1.patch
 https://www.python.org/ftp/python/2.7.11/Python-2.7.11.tar.xz
+https://www.python.org/ftp/python/3.5.1/Python-3.5.1.tar.xz
+https://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.1.tar.gz
+https://pypi.python.org/packages/source/s/setuptools/setuptools-17.1.1.tar.gz
+http://sqlite.org/2016/sqlite-autoconf-3130000.tar.gz
 http://ftp.gnu.org/gnu/wget/wget-1.17.1.tar.xz
+
+http://www.linuxfromscratch.org/patches/blfs/svn/pcre-8.38-upstream_fixes-1.patch
