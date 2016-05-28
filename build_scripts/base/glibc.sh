@@ -43,11 +43,9 @@ then
     make install
     # According to PiLFS, this symbolic link is needed
     case $SYSTEM in
-
     "rpi")
         ln -sfv ld-2.23.so "$LFS/tools/lib/ld-linux.so.3"
     ;;
-
     esac
     # Make some configuration stuff
     cp -v ../nscd/nscd.conf /etc/nscd.conf
@@ -57,47 +55,44 @@ then
     install -v -Dm644 ../nscd/nscd.service /lib/systemd/system/nscd.service
     # Make some locales for later
     mkdir -pv /usr/lib/locale
-    localedef -i cs_CZ -f UTF-8 cs_CZ.UTF-8
-    localedef -i de_DE -f ISO-8859-1 de_DE
-    localedef -i de_DE@euro -f ISO-8859-15 de_DE@euro
-    localedef -i de_DE -f UTF-8 de_DE.UTF-8
-    localedef -i en_GB -f UTF-8 en_GB.UTF-8
-    localedef -i en_HK -f ISO-8859-1 en_HK
-    localedef -i en_PH -f ISO-8859-1 en_PH
+    #localedef -i cs_CZ -f UTF-8 cs_CZ.UTF-8
+    #localedef -i de_DE -f ISO-8859-1 de_DE
+    #localedef -i de_DE@euro -f ISO-8859-15 de_DE@euro
+    #localedef -i de_DE -f UTF-8 de_DE.UTF-8
+    #localedef -i en_GB -f UTF-8 en_GB.UTF-8
+    #localedef -i en_HK -f ISO-8859-1 en_HK
+    #localedef -i en_PH -f ISO-8859-1 en_PH
     localedef -i en_US -f ISO-8859-1 en_US
     localedef -i en_US -f UTF-8 en_US.UTF-8
-    localedef -i es_MX -f ISO-8859-1 es_MX
-    localedef -i fa_IR -f UTF-8 fa_IR
-    localedef -i fr_FR -f ISO-8859-1 fr_FR
-    localedef -i fr_FR@euro -f ISO-8859-15 fr_FR@euro
-    localedef -i fr_FR -f UTF-8 fr_FR.UTF-8
-    localedef -i it_IT -f ISO-8859-1 it_IT
-    localedef -i it_IT -f UTF-8 it_IT.UTF-8
-    localedef -i ja_JP -f EUC-JP ja_JP
-    localedef -i ru_RU -f KOI8-R ru_RU.KOI8-R
-    localedef -i ru_RU -f UTF-8 ru_RU.UTF-8
-    localedef -i tr_TR -f UTF-8 tr_TR.UTF-8
-    localedef -i zh_CN -f GB18030 zh_CN.GB18030
+    #localedef -i es_MX -f ISO-8859-1 es_MX
+    #localedef -i fa_IR -f UTF-8 fa_IR
+    #localedef -i fr_FR -f ISO-8859-1 fr_FR
+    #localedef -i fr_FR@euro -f ISO-8859-15 fr_FR@euro
+    #localedef -i fr_FR -f UTF-8 fr_FR.UTF-8
+    #localedef -i it_IT -f ISO-8859-1 it_IT
+    #localedef -i it_IT -f UTF-8 it_IT.UTF-8
+    #localedef -i ja_JP -f EUC-JP ja_JP
+    #localedef -i ru_RU -f KOI8-R ru_RU.KOI8-R
+    #localedef -i ru_RU -f UTF-8 ru_RU.UTF-8
+    #localedef -i tr_TR -f UTF-8 tr_TR.UTF-8
+    #localedef -i zh_CN -f GB18030 zh_CN.GB18030
+    
     # Make another file to prevent Glibc networking issues
-    cat > /etc/nsswitch.conf << "EOF"
-    # Begin /etc/nsswitch.conf
+    for ns_string in                \
+    "passwd: files"                 \
+    "group: files"                  \
+    "shadow: files\n"               \
+    "hosts: files dns myhostname"   \
+    "networks: files\n"             \
+    "protocols: files"              \
+    "services: files"               \
+    "ethers: files"                 \
+    "rpc: files"
+    do
+        echo -e "$ns_string" >> /etc/nsswitch.conf
+    done
 
-    passwd: files
-    group: files
-    shadow: files
-
-    hosts: files dns myhostname
-    networks: files
-
-    protocols: files
-    services: files
-    ethers: files
-    rpc: files
-
-    # End /etc/nsswitch.conf
-EOF
-# ^ Sorry about this. It doesn't notice an indented EOF
-# Install some timezone related things
+    # Install some timezone related things
     tar -xvf "$PACKAGE_DIR/tzdata2016d.tar.gz"
 
     mkdir -pv $ZONEINFO/{posix,right}
@@ -111,20 +106,19 @@ EOF
     done
 
     cp -v zone.tab zone1970.tab iso3166.tab $ZONEINFO
-    zic -d $ZONEINFO -p America/New_York
-
+    zic -d $ZONEINFO -p "$TZ"
 	ln -sfv "/usr/share/zoneinfo/$TZ" /etc/localtime
-
-	cat > /etc/ld.so.conf << "EOF"
-	# Begin /etc/ld.so.conf
-	/usr/local/lib
-	/opt/lib
-	# Add an include directory
-	include /etc/ld.so.conf.d/*.conf
-	# End /etc/ld.so.conf
-EOF
-
-mkdir -pv /etc/ld.so.conf.d
+    # Create a file
+    for ld_string in                    \
+    "/usr/local/lib"                    \
+	"/opt/lib"                          \
+	"# Add an include directory"        \
+	"include /etc/ld.so.conf.d/*.conf"
+    do
+        echo "$ld_string" >> /etc/ld.so.conf
+    done
+    # Make some directory
+    mkdir -pv /etc/ld.so.conf.d
 
 fi
 

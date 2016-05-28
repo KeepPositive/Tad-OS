@@ -8,8 +8,9 @@ MPFR_VER=$2
 GMP_VER=$3
 MPC_VER=$4
 
-if [ -z "$CORES" ]; then
-	CORES='4'
+if [ -z "$CORES" ]
+then
+	CORES=4
 fi
 
 tar xvf "$PACKAGE_DIR/$FOLD_NAME.tar.bz2"
@@ -35,6 +36,9 @@ mv -v "mpc-$MPC_VER" mpc
 
 case $SYSTEM in
 "rpi")
+    
+    cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
+        `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/include-fixed/limits.h
     for file in \
 		$(find gcc/config -name linux64.h -o -name linux.h -o -name sysv4.h -o -name linux-eabi.h -o -name linux-elf.h)
     do
@@ -89,7 +93,6 @@ RANLIB=$LFS_TGT-ranlib                             \
 case $SYSTEM in
 "rpi")
     sed -i 's/none-/armv6l-/' Makefile
-    sed -i 's/none-/armv7l-/' Makefile
 ;;
 esac
 
@@ -106,16 +109,8 @@ then
 	echo 'int main(){}' > dummy.c
 	cc dummy.c
 	readelf -l a.out | grep ': /tools'
-
-	if [ $? -eq 0 ]
-    then
-        echo "GOOD, the test worked!"
-        rm -v dummy.c a.out
-    else
-        echo "WOOPS, test failed..."
-        exit 1
-    fi
 fi
 
 popd
+
 rm -rf "$FOLD_NAME"

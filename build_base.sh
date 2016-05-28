@@ -2,9 +2,10 @@
 
 ## Start variables
 CONFIGURE_FILE="/build.cfg"
-
+SCRIPT_DIR="/base"
+PACKAGE_DIR="/source"
 # Get variables from CONFIGURE_FILE
-for name in "INSTALL_SOURCES" "LFS" "TIMEZONE"
+for name in "INSTALL_SOURCES" "LFS" "SYSTEM" "TIMEZONE"
 do
     # The 'eval' command evaluates a string into runable bash
     eval "export $name=$(grep $name "$CONFIGURE_FILE" | awk '{print $2}')"
@@ -78,7 +79,6 @@ do
     echo "$passwd_string" >> /etc/passwd
 done
 
-
 # Create the group file
 for group_string in              \
 "root:x:0:"                      \
@@ -116,9 +116,6 @@ do
     echo "$group_string" >> /etc/group
 done
 
-# Update the login prompt
-#exec /tools/bin/bash --login +h
-
 # Create some log files to be used later on
 touch /var/log/{btmp,lastlog,faillog,wtmp}
 chgrp -v utmp /var/log/lastlog
@@ -129,7 +126,7 @@ chmod -v 600  /var/log/btmp
 # Install Linux headers
 case $SYSTEM in
 "rpi")
-    source "$SCRIPT_DIR/rpi_headers.sh"
+    source "$SCRIPT_DIR/rpi_headers.sh" "4.4.y"
 ;;
 *)
     source "$SCRIPT_DIR/linux_headers.sh" "4.6"
@@ -142,9 +139,9 @@ source "$SCRIPT_DIR/glibc.sh" "2.23"
 
 # Adjust the toolchain a little for building
 mv -v /tools/bin/{ld,ld-old}
-mv -v /tools/$(uname -m)-pc-linux-gnu/bin/{ld,ld-old}
+mv -v /tools/$(gcc -dumpmachine)/bin/{ld,ld-old}
 mv -v /tools/bin/{ld-new,ld}
-ln -sv /tools/bin/ld /tools/$(uname -m)-pc-linux-gnu/bin/ld
+ln -sv /tools/bin/ld /tools/$(gcc -dumpmachine)/bin/ld
 
 gcc -dumpspecs | sed -e 's@/tools@@g'                   \
     -e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib/ @}' \
@@ -154,11 +151,6 @@ gcc -dumpspecs | sed -e 's@/tools@@g'                   \
 echo 'int main(){}' > dummy.c
 cc dummy.c -v -Wl,--verbose &> dummy.log
 readelf -l a.out | grep ': /lib'
-# Test some other things too
-#grep -o '/usr/lib.*/crt[1in].*succeeded' dummy.log
-#grep -B1 '^ /usr/include' dummy.log
-#grep "/lib.*/libc.so.6 " dummy.log
-#grep found dummy.log
 rm -v dummy.c a.out dummy.log
 
 # Back to building and/or installing things!
@@ -208,7 +200,6 @@ source "$SCRIPT_DIR/grep.sh" "2.25"
 source "$SCRIPT_DIR/readline.sh" "6.3"
 # bash
 source "$SCRIPT_DIR/bash.sh" "4.3.30"
-#exec /bin/bash --login +h
 # bc
 source "$SCRIPT_DIR/bc.sh" "1.06.95"
 # Libtool
@@ -292,4 +283,4 @@ source "$SCRIPT_DIR/sudo.sh" "1.8.16"
 source "$SCRIPT_DIR/which.sh" "2.21"
 
 # Done installing. WOW.
-echo "Finished building packages. Continue on the guide."
+echo "Finished building all packages. Continue to strip_symbols."

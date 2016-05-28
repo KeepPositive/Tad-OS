@@ -5,8 +5,9 @@ VERSION=$1
 FOLD_NAME="$PACKAGE-$VERSION"
 BUILD_DIR="$LFS/$FOLD_NAME/build"
 
-if [ -z "$CORES" ]; then
-	CORES='4'
+if [ -z "$CORES" ]
+then
+	CORES=4
 fi
 
 tar xvf "$PACKAGE_DIR/$FOLD_NAME.tar.bz2"
@@ -30,7 +31,8 @@ RANLIB=$LFS_TGT-ranlib         \
 make -j "$CORES"
 
 # Install the built package
-if [ "$INSTALL" -eq 1 ]; then
+if [ "$INSTALL" -eq 1 ]
+then
     make install
 	make -C ld clean
 	make -C ld LIB_PATH=/usr/lib:/lib

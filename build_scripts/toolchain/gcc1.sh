@@ -99,7 +99,6 @@ pushd "$BUILD_DIR"
 case $SYSTEM in
 "rpi")
     sed -i 's/none-/armv6l-/' Makefile
-    sed -i 's/none-/armv7l-/' Makefile
 ;;
 esac
 

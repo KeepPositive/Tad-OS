@@ -4,12 +4,10 @@ PACKAGE="gcc"
 VERSION=$1
 FOLD_NAME="$PACKAGE-$VERSION"
 BUILD_DIR="/$FOLD_NAME/build"
-MPFR_VER=$2
-GMP_VER=$3
-MPC_VER=$4
 
-if [ -z "$CORES" ]; then
-	CORES='4'
+if [ -z "$CORES" ]
+then
+	CORES=4
 fi
 
 tar xvf "$PACKAGE_DIR/$FOLD_NAME.tar.bz2"
@@ -29,18 +27,12 @@ mkdir "$BUILD_DIR"
 pushd "$BUILD_DIR"
 
 # Configure the source
-SED=sed ../configure --prefix=/usr    \
-                     --enable-languages=c,c++ \
-                     --disable-multilib       \
-                     --disable-bootstrap      \
-                     --with-system-zlib
-# Edit the Makefile to prevent a Pi build error
-case $SYSTEM in
-"rpi")
-    sed -i 's/none-/armv6l-/' Makefile
-    sed -i 's/none-/armv7l-/' Makefile
-;;
-esac
+SED=sed                                 \
+../configure --prefix=/usr              \
+             --enable-languages=c,c++   \
+             --disable-multilib         \
+             --disable-bootstrap        \
+             --with-system-zlib
 
 # Build using the configured sources
 make -j "$CORES"
@@ -52,7 +44,7 @@ then
     ln -sv ../usr/bin/cpp /lib
     ln -sv gcc /usr/bin/cc
     install -v -dm755 /usr/lib/bfd-plugins
-    ln -sfv ../../libexec/gcc/$(gcc -dumpmachine)/6.1.0/liblto_plugin.so \
+    ln -sfv ../../libexec/gcc/"$(gcc -dumpmachine)"/6.1.0/liblto_plugin.so \
             /usr/lib/bfd-plugins/
     # Apparently some files get misplaced, so put them in their place
     mkdir -pv /usr/share/gdb/auto-load/usr/lib

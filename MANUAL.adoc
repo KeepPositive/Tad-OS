@@ -77,9 +77,8 @@ the base system. This will also take quite a bit of time.
 
 ```
 # bash prepare_base.sh
-$ bash build_base1.sh
-$ bash build_base2.sh
-$ bash build_base3.sh
+$ bash build_base.sh
+$ bash finish_base.sh
 ```
 
 === Finishing Up
