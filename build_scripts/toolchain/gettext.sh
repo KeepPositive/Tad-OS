@@ -4,7 +4,8 @@ PACKAGE="gettext"
 VERSION=$1
 FOLD_NAME="$PACKAGE-$VERSION"
 
-if [ -z "$CORES" ]; then
+if [ -z "$CORES" ]
+then
 	CORES='4'
 fi
 
@@ -23,7 +24,8 @@ make -C src msgmerge
 make -C src xgettext
 
 # Install the built package
-if [ "$INSTALL" -eq 1 ]; then
+if [ "$INSTALL_SOURCES" -eq 1 ]
+then
     cp -v src/{msgfmt,msgmerge,xgettext} /tools/bin
 fi
 

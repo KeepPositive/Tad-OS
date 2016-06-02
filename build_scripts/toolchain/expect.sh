@@ -22,7 +22,7 @@ sed 's:/usr/local/bin:/bin:' configure.orig > configure
 make -j "$CORES"
 
 # Install the built package
-if [ "$INSTALL" -eq 1 ]; then
+if [ "$INSTALL_SOURCES" -eq 1 ]; then
     make SCRIPTS="" install
 fi
 

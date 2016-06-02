@@ -3,26 +3,30 @@
 The simple OS for people who care about computers and stuff
 
 This is an actively developed Linux-based OS which can be built using Bash build
-scripts. This repo holds those build scripts, sha256 hashes, etc. needed to build
-your own Tad OS.
+scripts. This repo holds the build scripts, sha256 hashes, etc. needed to build
+your very own Tad OS.
 
 == System Compatibility
 
-Theoretically, this build system will work on any CPU that is supported by the
-GNU Compiler and the Linux kernel. Some may need some minor patches. But if you
-want to build Tad OS, please make sure your system is supported. The below CPUs
-types have been tested so far:
-* arm7l (Tested on a Raspberry Pi 3, powered by a Broadcom BCM2837)
-* x86_64 (Tested using an AMD FX-9370)
+Theoretically, this build system will work on any CPU that is supported by 
+the GNU Compiler and the Linux kernel. In reality, support will have to be  
+built in to the build scripts, and proper patches must be applied. But if you 
+want to build Tad OS from source, and you are using a supported processor 
+type. The below CPUs types have been tested so far:
+
+* x86_64
+
+For a full list of successfully tested hardware, check out the 
+link:docs/COMPATIBILITY.adoc[compatibility list].
 
 == Usage
 
 To understand how to use the Tad OS build script, please check out the
-link:MANUAL.adoc[documentation]
+link:docs/MANUAL.adoc[documentation].
 
 == Contribution & Changes
 
-If you are unhappy with the way something works, or if you think a comment is
-oddly worded, etc., don't fret. You can
+If you are unhappy with the way something works, or if you think a comment 
+is oddly worded, etc., don't fret. You can
 mailto:tmoseley1106@gmail.com[shoot me an email]
 or you can post an issue here on the Tad OS repo.

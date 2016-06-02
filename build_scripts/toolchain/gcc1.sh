@@ -106,7 +106,7 @@ esac
 make -j "$CORES"
 
 # Install the built package
-if [ "$INSTALL" -eq 1 ]
+if [ "$INSTALL_SOURCES" -eq 1 ]
 then
     make install
 fi

@@ -19,7 +19,7 @@ pushd "tcl$VERSION/unix"
 make -j "$CORES"
 
 # Install the built package
-if [ "$INSTALL" -eq 1 ]; then
+if [ "$INSTALL_SOURCES" -eq 1 ]; then
     make install
 	chmod -v u+w /tools/lib/libtcl8.6.so
 	make install-private-headers

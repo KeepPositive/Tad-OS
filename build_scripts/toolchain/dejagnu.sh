@@ -16,7 +16,7 @@ pushd "$FOLD_NAME"
 ./configure --prefix=/tools
 
 # Install the built package
-if [ "$INSTALL" -eq 1 ]; then
+if [ "$INSTALL_SOURCES" -eq 1 ]; then
     make install
 fi
 

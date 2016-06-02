@@ -18,7 +18,7 @@ sh Configure -des -Dprefix=/tools -Dlibs=-lm
 make -j "$CORES"
 
 # Install the built package
-if [ "$INSTALL" -eq 1 ]; then
+if [ "$INSTALL_SOURCES" -eq 1 ]; then
     cp -v perl cpan/podlators/pod2man /tools/bin
     mkdir -pv /tools/lib/perl5/5.22.1
     cp -Rv lib/* /tools/lib/perl5/5.22.1

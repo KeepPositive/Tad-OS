@@ -4,11 +4,13 @@ PACKAGE="bash"
 VERSION=$1
 FOLD_NAME="$PACKAGE-$VERSION"
 
-if [ -z "$CORES" ]; then
-	CORES='4'
+if [ -z "$CORES" ]
+then
+	CORES=4
 fi
 
 tar xvf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
+
 pushd "$FOLD_NAME"
 
 # Configure the source
@@ -18,7 +20,8 @@ pushd "$FOLD_NAME"
 make -j "$CORES"
 
 # Install the built package
-if [ "$INSTALL" -eq 1 ]; then
+if [ "$INSTALL_SOURCES" -eq 1 ]
+then
     make install
     ln -sv bash /tools/bin/sh
 fi
