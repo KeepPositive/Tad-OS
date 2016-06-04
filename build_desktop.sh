@@ -45,6 +45,8 @@ source "$SCRIPT_DIR/startup.sh" "0.12"
 source "$SCRIPT_DIR/urxvt.sh" "9.22"
 # openbox
 source "$SCRIPT_DIR/openbox.sh" "3.6.1"
+# hsetroot
+source "$SCRIPT_DIR/hsetroot.sh" 
 
 echo "All done! Have a good day." 
 

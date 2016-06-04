@@ -28,12 +28,15 @@ pushd "$BUILD_DIR"
 for package in $(grep -v '^#' "$START_DIR/sha256/xorg-$BUILD_TYPE.sha256" \
                          | awk '{print $2}')
 do
-    fold_name=${package%.tar.bz2}
+    folder_name=${package%.tar.bz2}
+    
     tar xvf "$START_DIR/packs/xorg/$BUILD_TYPE/$package"
-    pushd "$fold_name"
+    
+    pushd "$folder_name"
+    
     # For a few X.Org apps, some changes must be made
-    case "$foldname" in
-    luit-* )
+    case $folder_name in
+    luit-[0-9]* )
         line1="#ifdef _XOPEN_SOURCE"
         line2="#  undef _XOPEN_SOURCE"
         line3="#  define _XOPEN_SOURCE 600"
@@ -46,12 +49,15 @@ do
         sed -e 's/\$(CPP) \$(DEFS)/$(CPP) -P $(DEFS)/' -i man/Makefile.in
     ;;
     esac
+    # Configure IT
     ./configure $XORG_CONFIG
     #  Use the as_root function above so passwords do not have to be entered 
     # every time
     as_root make install
+    
     popd
-    rm -rf "$fold_name"
+    
+    rm -rf "$folder_name"
 done
 popd
 rm -rf "$BUILD_DIR"
