@@ -1,0 +1,17 @@
+= System Compatability
+
+Currently, *Tad OS* has been successfuly built from source code on the following processors:
+
+== 64-Bit
+
+=== AMD FX-9370
+
+* Date: 05/26/2016
+* Toolchain time: 
+** N/a
+* Base time: 
+** N/a
+
+=== Intel 
+
+== ARMv7

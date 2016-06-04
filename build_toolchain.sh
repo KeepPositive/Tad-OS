@@ -5,7 +5,7 @@
 CONFIGURE_FILE="./build.cfg"
 
 # Get some variables from build.cfg
-for name in "LFS" "SYSTEM"
+for name in "LFS" "SYSTEM" "INSTALL_SOURCES"
 do
     # The 'eval' command evaluates a string into runable bash
     eval "export $name=$(grep $name "$CONFIGURE_FILE" | awk '{print $2}')"
@@ -19,9 +19,8 @@ done
 
 SCRIPT_DIR="$LFS/toolchain"
 PACKAGE_DIR="$LFS/source"
-TOOL_DIR=/tools
+TOOL_DIR="$LFS/tools"
 PATH="$TOOL_DIR/bin":/bin:/usr/bin
-INSTALL=1
 # Some compression formats
 XZIP=".tar.xz"
 BZIP=".tar.bz2"
