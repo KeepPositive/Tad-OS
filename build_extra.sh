@@ -7,7 +7,7 @@ START_DIR=$(pwd)
 SCRIPT_DIR="$START_DIR/build_scripts/extra"
 PACKAGE_DIR="$START_DIR/packs/extra"
 # Configure stuffs here
-INSTALL=0
+INSTALL=1
 CORES=$(grep -c ^processor /proc/cpuinfo)
 INTERNET=1
 URL="http://anduin.linuxfromscratch.org/BLFS/other/certdata.txt"
@@ -30,7 +30,7 @@ source "$SCRIPT_DIR/wget.sh" "1.17.1"
 if [ "$INSTALL" -eq 1 ] && [ "$INTERNET" -eq 1 ]
 then
     echo "Creating web certificates!"
-    cp ./certificates/* /usr/bin
+    #cp ./certificates/* /usr/bin
     rm -vf certdata.txt
     wget "$URL"
     make-ca.sh
@@ -40,7 +40,8 @@ then
     c_rehash
     install BLFS-ca-bundle*.crt ${SSLDIR}/ca-bundle.crt
     ln -sfv ../ca-bundle.crt ${SSLDIR}/certs/ca-certificates.crt
-    rm -r certs BLFS-ca-bundle*
+    rm -vf certdata.txt
+    rm -vr certs BLFS-ca-bundle*
 fi
 # curl
 source "$SCRIPT_DIR/curl.sh" "7_48_0"

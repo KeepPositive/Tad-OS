@@ -5,29 +5,27 @@
 START_DIR=$(pwd)
 SCRIPT_DIR="$START_DIR/build_scripts/xorg"
 PACKAGE_DIR="$START_DIR/packs/xorg"
-XORG_PREFIX="/usr"
-XORG_CONFIG="--prefix=$XORG_PREFIX --sysconfdir=/etc \
-             --localstatedir=/var --disable-static"
+XORG_CONFIG="--prefix=/usr --sysconfdir=/etc --localstatedir=/var --disable-static "
 # Configurables
-## Choose from: "amd", "intel" or "pi"
-## Nvidia cards are not supported because I do not have one to test on
-GRAPHICS_DRIVER="amd"
-INSTALL=0
+# Choose from: "amd", "intel" or "rpi"
+# Nvidia cards are not supported because I do not have one to test on
+GRAPHICS_DRIVER="rpi"
+INSTALL=1
 CORES=$(grep -c ^processor /proc/cpuinfo)
 
-## Start script
-
+# Start script
+set -o errexit
 echo "Building xorg server"
-sleep 3
-# build util-macros
+# Start building some things
+# util-macros
 source "$SCRIPT_DIR/std_xorg_install.sh" "util-macros" "1.19.0"
-# build the X.Org protocol headers
+# X.Org protocol headers
 source "$SCRIPT_DIR/group_build.sh" "proto"
-# build libXau
+# libXau
 source "$SCRIPT_DIR/std_xorg_build.sh" "libXau" "1.0.8"
-# build libXdmcp
+# libXdmcp
 source "$SCRIPT_DIR/std_xorg_build.sh" "libXdmcp" "1.1.2"
-# build xcb-proto
+# xcb-proto
 source "$SCRIPT_DIR/std_xorg_install.sh" "xcb-proto" "1.11"
 # build libxcb
 source "$SCRIPT_DIR/libxcb.sh" "1.11.1"
@@ -62,7 +60,7 @@ source "$SCRIPT_DIR/std_xorg_build.sh" "xcb-util-renderutil" "0.3.9"
 source "$SCRIPT_DIR/std_xorg_build.sh" "xcb-util-wm" "0.4.1"
 # build xcb-util-cursor
 source "$SCRIPT_DIR/std_xorg_build.sh" "xcb-util-cursor" "0.1.2"
-## Start Mesa build dependencies
+# Start Mesa build dependencies
 # build libdrm
 source "$SCRIPT_DIR/libdrm.sh" "2.4.67"
 # build llvm (without clang)
@@ -73,7 +71,7 @@ source "$SCRIPT_DIR/libvdpau.sh" "1.1.1"
 source "$SCRIPT_DIR/std_xorg_install.sh" "xbitmaps" "1.1.1"
 # build the X.Org applications group
 source "$SCRIPT_DIR/group_build.sh" "app"
-source "$SCRIPT_DIR/std_xorg_build".sh "xcursor-themes" "1.0.4"
+source "$SCRIPT_DIR/std_xorg_build.sh" "xcursor-themes" "1.0.4"
 source "$SCRIPT_DIR/group_build.sh" "font"
 source "$SCRIPT_DIR/xkeyboardconfig.sh" "2.17"
 source "$SCRIPT_DIR/pixman.sh" "0.34.0"
@@ -89,13 +87,16 @@ source "$SCRIPT_DIR/input-evdev.sh" "2.10.1"
 
 case "$GRAPHICS_DRIVER" in
 "amd")
-    echo "Making AMD/ATI graphics driver" && sleep 2
+    echo "Making AMD/ATI graphics driver" 
+    sleep 2
     source "$SCRIPT_DIR/amd.sh" "7.7.0"
 ;;
 "intel") 
     source "$SCRIPT_DIR/intel.sh" "0340718"
 ;;
-"pi")
+"rpi")
+    echo "Making the RPi framebuffer driver"
+    sleep 2
     source "$SCRIPT_DIR/fbturbo.sh"
 ;;
 esac

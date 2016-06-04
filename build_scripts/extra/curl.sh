@@ -4,7 +4,7 @@ PACKAGE=curl
 VERSION=$1
 FOLD_NAME=curl-curl-$VERSION
 
-if [ -z $CORES]
+if [ -z "$CORES" ]
 then
 	CORES=4
 fi
