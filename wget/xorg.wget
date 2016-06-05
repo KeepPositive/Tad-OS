@@ -17,7 +17,7 @@ http://www.linuxfromscratch.org/patches/blfs/svn/xorg-server-1.18.3-add_prime_su
 http://www.freedesktop.org/software/libevdev/libevdev-1.4.6.tar.xz
 https://www.freedesktop.org/software/libinput/libinput-1.2.4.tar.xz
 http://ftp.x.org/pub/individual/driver/xf86-input-evdev-2.10.1.tar.bz2
-
+http://ftp.x.org/pub/individual/app/xinit-1.3.4.tar.bz2
 http://download.savannah.gnu.org/releases/freetype/freetype-2.6.3.tar.bz2
 http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.2.6.tar.bz2
 http://ftp.gnome.org/pub/gnome/sources/glib/2.48/glib-2.48.0.tar.xz

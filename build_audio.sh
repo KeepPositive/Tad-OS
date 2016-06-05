@@ -8,7 +8,7 @@ START_DIR=$(pwd)
 SCRIPT_DIR="$START_DIR/build_scripts/audio"
 PACKAGE_DIR="$START_DIR/packs/audio"
 
-INSTALL=0
+INSTALL=1
 ## End variables
 
 ## Start script
@@ -32,11 +32,10 @@ source "$SCRIPT_DIR/flac.sh" "1.3.1"
 # LAME
 source "$SCRIPT_DIR/lame.sh" "3.99.5"
 # libsndfile
-source "$SCRIPT_DIR/libsndfile" "1.0.26"
+source "$SCRIPT_DIR/libsndfile.sh" "1.0.26"
 # Pulseaudio
 source "$SCRIPT_DIR/pulseaudio.sh" "8.0"
 
 echo "Listen to all the audio your heart desires!"
 
 ## End script
-

@@ -1,7 +1,7 @@
 #! /bin/bash
 
 ## Start variables
-PACKAGE="json-c"
+PACKAGE="xinit"
 VERSION=$1
 FOLD_NAME="$PACKAGE-$VERSION"
 
@@ -12,15 +12,14 @@ fi
 ## End variables
 
 ## Start script
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
+tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.bz2"
 
-pushd "$PACKAGE-$PACKAGE-$VERSION"
+pushd "$FOLD_NAME"
 
 # Configure the source
-sed -i s/-Werror// Makefile.in
-./configure --prefix=/usr --disable-static
+./configure $XORG_CONFIG --with-xinitdir=/etc/X11/xinit
 # Build using the configured sources
-make -j 1
+make -j "$CORES"
 # Install the built package
 if [ "$INSTALL" -eq 1 ]
 then
@@ -29,5 +28,5 @@ fi
 
 popd
 
-rm -rf "$PACKAGE-$PACKAGE-$VERSION"
+rm -rf "$FOLD_NAME"
 ## End script

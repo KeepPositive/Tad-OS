@@ -1,10 +1,11 @@
 #! /bin/bash
 
-PACKAGE="fbturbo"
+PACKAGE="xf86-video-fbturbo"
 VERSION=$1
 
-if [ -z "$CORES" ]; then
-	CORES='4'
+if [ -z "$CORES" ]
+then
+	CORES=4
 fi
 
 # Pull the fbturbo repository
@@ -21,7 +22,8 @@ pushd "$PACKAGE"
 make -j "$CORES"
 
 # Install the built package
-if [ "$INSTALL" -eq 1 ]; then
+if [ "$INSTALL" -eq 1 ]
+then
     make install
 fi
 

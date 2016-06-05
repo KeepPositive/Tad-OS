@@ -17,7 +17,7 @@ tar xf "$PACKAGE_DIR/$VERSION.tar.gz"
 pushd "$FOLD_NAME"
 
 # Configure the source
-./configure --prefix=/usr
+#./configure --prefix=/usr
 # Build using the configured sources
 make -j "$CORES"
 # Install the built package

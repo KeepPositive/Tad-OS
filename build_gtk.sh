@@ -3,9 +3,10 @@
 ## Start variables
 
 START_DIR=$(pwd)
-PACKAGE_DIR="$START_DIR/gtk"
+PACKAGE_DIR="$START_DIR/packs/gtk"
 SCRIPT_DIR="$START_DIR/build_scripts/gtk"
 
+INSTALL=1
 ## End variables
 
 ## Start script

@@ -10,7 +10,7 @@ START_DIR=$(pwd)
 PACKAGE_DIR="$START_DIR/packs/desktop"
 SCRIPT_DIR="$START_DIR/build_scripts/desktop"
 # Install or naw?
-INSTALL=0
+INSTALL=1
 # Number of cores to use
 CORES=$(grep -c ^processor /proc/cpuinfo)
 ## End variables

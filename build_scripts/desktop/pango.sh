@@ -24,7 +24,7 @@ make -j "$CORES"
 if [ "$INSTALL" -eq 1 ]
 then
     make install
-    pango-querymodules --update-cache
+    #pango-querymodules --update-cache
 fi
 
 popd

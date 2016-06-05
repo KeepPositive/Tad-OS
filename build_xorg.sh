@@ -16,7 +16,7 @@ CORES=$(grep -c ^processor /proc/cpuinfo)
 # Start script
 set -o errexit
 echo "Building xorg server"
-# Start building some things
+## Start building some things
 # util-macros
 source "$SCRIPT_DIR/std_xorg_install.sh" "util-macros" "1.19.0"
 # X.Org protocol headers
@@ -67,9 +67,11 @@ source "$SCRIPT_DIR/libdrm.sh" "2.4.67"
 source "$SCRIPT_DIR/llvm.sh" "3.8.0"
 # build libvpdau
 source "$SCRIPT_DIR/libvdpau.sh" "1.1.1"
-# build mesa
+# mesa
+source "$SCRIPT_DIR/mesa.sh" "11.2.1"
+# xbitmaps
 source "$SCRIPT_DIR/std_xorg_install.sh" "xbitmaps" "1.1.1"
-# build the X.Org applications group
+# X.Org applications group
 source "$SCRIPT_DIR/group_build.sh" "app"
 source "$SCRIPT_DIR/std_xorg_build.sh" "xcursor-themes" "1.0.4"
 source "$SCRIPT_DIR/group_build.sh" "font"
@@ -81,7 +83,7 @@ source "$SCRIPT_DIR/xorgserver.sh" "1.18.3"
 ## Please make sure your kernel is configured correctly.
 source "$SCRIPT_DIR/libevdev.sh" "1.4.6"
 source "$SCRIPT_DIR/mtdev.sh" "1.1.5"
-## Might try this alternative in the future
+# Might try this alternative in the future
 source "$SCRIPT_DIR/libinput.sh" "1.2.4"
 source "$SCRIPT_DIR/input-evdev.sh" "2.10.1"
 
@@ -95,10 +97,12 @@ case "$GRAPHICS_DRIVER" in
     source "$SCRIPT_DIR/intel.sh" "0340718"
 ;;
 "rpi")
-    echo "Making the RPi framebuffer driver"
-    sleep 2
+    echo "Making the RPi framebuffer driver 'fbturbo'"
     source "$SCRIPT_DIR/fbturbo.sh"
 ;;
 esac
+# xinit
+source "$SCRIPT_DIR/xinit.sh" "1.3.4"
 
+echo "All done! Enjoy the remainder of your day"
 ## End script

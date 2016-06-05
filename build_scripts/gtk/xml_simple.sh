@@ -17,7 +17,7 @@ tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
 pushd "$FOLD_NAME"
 
 # Configure the source
-perl MAkefile.PL
+perl Makefile.PL
 # Build using the configured sources
 make -j "$CORES"
 # Install the built package

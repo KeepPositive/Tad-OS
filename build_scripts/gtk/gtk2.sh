@@ -17,6 +17,7 @@ tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.xz"
 pushd "$FOLD_NAME"
 # Edit the Makefile to prevent a documentation error
 sed -i "s#l \(gtk-.*\).sgml#& -o \1#" docs/{faq,tutorial}/Makefile.in
+sed -e 's#pltcheck.sh#$(NULL)#g' -i gtk/Makefile.in 
 # Configure the source
 ./configure --prefix=/usr --sysconfdir=/etc
 # Build using the configured sources
