@@ -20,14 +20,23 @@ pushd "$FOLD_NAME"
 # Correct some file permission on install
 sed -i 's/cp -p/cp/' build/make/Makefile
 
+# Create two temporary links if building on the Raspberry Pi
+case $SYSTEM in
+"rpi")
+    ln -sv /usr/bin/arm7l-unknown-linux-gnueabihf-gcc \ 
+           /usr/bin/arm-none-gnueabi-gcc
+    ln -sv /usr/bin/as /usr/bin/arm-none-gnueabi-as
+;;
+esac
+
 popd
 
 # Enter a build directory
 mkdir $BUILD_DIR
 pushd $BUILD_DIR
 # Configure the source
-../configure --prefix=/usr    \
-             --enable-shared  \
+../configure --prefix=/usr            \
+             --enable-shared          \
              --disable-static
 # Build using the configured sources
 make -j "$CORES"

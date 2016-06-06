@@ -12,7 +12,7 @@ fi
 ## End variables
 
 ## Start script
-tar xf "$PACKAGE_DIR/$FOLD_NAME.source.tar.xz"
+tar xvf "$PACKAGE_DIR/$FOLD_NAME.source.tar.xz"
 
 pushd "$FOLD_NAME"
 

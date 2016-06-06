@@ -12,13 +12,14 @@ fi
 ## End variables
 
 ## Start script
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.xz"
+tar xvf "$PACKAGE_DIR/$FOLD_NAME.tar.xz"
 
 pushd "$FOLD_NAME"
 
 # Add a linking flag in the configure file
 sed -i 's/-lflite"/-lflite -lasound"/' configure
 # Configure the source
+echo "Configuring!"
 ./configure --prefix=/usr        \
             --enable-gpl         \
             --enable-version3    \
@@ -27,7 +28,6 @@ sed -i 's/-lflite"/-lflite -lasound"/' configure
             --disable-debug      \
             --enable-libfreetype \
             --enable-libmp3lame  \
-            --enable-libopus     \
             --enable-libvorbis   \
             --enable-libvpx      \
             --enable-libx264     \
