@@ -1,29 +1,30 @@
-[H[J
-
-			 cx
-			'O.
-			k:
-		       ,O
-		       ol
-		       k,
-		      .O.
-		      'k
-		      ;x
-		      :o
-		      co
-	 ...          cO0KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK00Od:.
-	oxxx;........,:lk000000000000000000000000000000000000000000000000000000000000xl.
-	.:c;.         cd00000000000000000000000000000000000000000000000000000000000dc'
-		      lxcc:::::::::::::::::::::::::::::::::::::::::::::::::::ccc;.
-		      co
-		      ;d
-		      ,x
-		      .k.                 Hey there,
-		       k'             Welcome to Tad OS!
-		       lc
-		       ,x       P.S. Today is \d
-			d;
-			.x.
-			 ;o
 
 
+                           ..                                                                                                                       
+                          ox.                                                                                                                       
+                         ox.                                                                                                                        
+                        :x'                                                                                                                         
+                        xo                                                                                 .;lodxxxdoc;.              .:odxxddolc;  
+                     kkxOxlllloollllloxO,         x              .loolllllllol:,.                       ,dkkkl'.   .,okkkl.         .xkkl.    .ckc  
+                     o co    ,Kk       ,,        :Ko              .KK.        .,dOl.                  'xkkko          .xkkkd.      .kkk:        ',  
+                     . xd    ,KO        .       .KkK'              KK.           .dKo                ckkkko             xkkkk'     lkkk,         .  
+                      .xc    ,KO                Ol.K0              KK.             :KO              :kkkkk              .kkkkk.    okkkk;           
+                      'x;    ,KO               lO  :Kd             KK.              dKx             kkkkk:               xkkkkd    ,kkkkkkl.        
+                      ,xc..'.cKO...''''.''.''';Kl'''0K:''''''''''.'KK'..'''''''''''.;KK;..'''.''...ckkkkk.               ckkkkk.    ;kkkkkkkx;      
+    ...               'clkkkkOKOokOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOkKKokOOOOOOOOOOOOOkKKkxOOOOOOOOkkkkkkkk:;'.            ;kkkkk.      ckkkkkkkkl.   
+  cxxxx:..............,c:lkkkOKOokkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkKKokkkkkkkkkkkkkkk0Kkdkkkkkkkkkkkkkkkklxkkkxc.        ;kkkkk.        'dkkkkkkkx. 
+   .'''.              .;:xkkkOKOokkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkxKKlxkkkkkkkkkkkkkxKKxdkkkkkkkkkkkkkkkkooc,.           lkkkkk           .ckkkkkkk.
+                      ,xo:;;;oKO';;;;;;;;;;lko;;;;;;;;:kkl;;;;;;;;;KK,;;;;;;;;;;;;;;oKK,,;;;;;;;;;;;xkkkkl               kkkkkl              ,xkkkkl
+                      'x;    ,KO           x0          dKk         KK.              OKl             'kkkkk.             ;kkkkx     d           lkkkl
+                      .x:    ,KO          :K,           0Kc        KK.             xKo               'kkkkx            .kkkkx.    .k:          'kkk'
+                       xl    ,KO         .Kd            :KK.       KK.           ;0O'                 .lkkkx'         :kkkk:      .kk:         dkk: 
+                       dd    dKK.       '0K:            .KK0'     ;KK,......',:dkl.                     .;dkkx:'...,lkkko,         ckkkl,...'ckkl.  
+                       cx. .',,,,.    ..''''.          .''''''. .',''''''''''..                             .';:cc::;'.              .';:cc:;,.     
+                       .d:                                                                                                                          
+                        od                                                                                                                          
+                        .d:                                                                                                                         
+                         ,d'                                       Welcome to Tad OS!                                                                                 
+                          'l'                                    Today is /d                                                                            
+                                                                                                                                                    
+                                                                                                                                                    
+                                                                                                                                                    

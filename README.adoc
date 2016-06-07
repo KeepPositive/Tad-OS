@@ -24,6 +24,10 @@ link:docs/COMPATIBILITY.adoc[compatibility list].
 To understand how to use the Tad OS build script, please check out the
 link:docs/MANUAL.adoc[documentation].
 
+Also, to learn more about GNU/Linux and other related topics, check out
+link:http://keeppositive.github.io/Tad-Docs/[Tad Docs]
+where any user can learn a lot about their operating system. 
+
 == Contribution & Changes
 
 If you are unhappy with the way something works, or if you think a comment 
