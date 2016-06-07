@@ -19,6 +19,12 @@ pushd "$FOLD_NAME"
 
 # Apply a patch
 patch -Np1 -i "$PACKAGE_DIR/x265-1.9-enable_static-1.patch"
+# Apply a patch for the RPi3
+case $SYSTEM in
+"rpi")
+    patch -Np1 -i "$PACKAGE_DIR/arm.patch"
+;;
+esac
 
 popd
 
@@ -28,6 +34,7 @@ pushd "$BUILD_DIR"
 # Configure the source
 cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DENABLE_STATIC=OFF         \
+      -DENABLE_SHARED=ON          \
       ../source
 # Build using the configured sources
 make -j "$CORES"
