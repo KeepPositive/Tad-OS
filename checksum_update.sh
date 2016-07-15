@@ -1,7 +1,7 @@
 #! /bin/bash
 
 #  Overwrite the current SHA256 files using local files as the hashes. Only
-# works if you have all the files of the group installed locally. Mostly for 
+# works if you have all the files of the group installed locally. Mostly for
 # developement purposes.
 
 ## Start variables
@@ -17,8 +17,8 @@ SETTING=$1
 sha_maker () {
 
     group=$1
-    group_dir="$PACKAGE_DIR/$group"
-    sha_file="$SHA_DIR/$group.sha256"
+    group_dir="$group/sources"
+    sha_file="$group/sha256sums"
     old_sha_file="$sha_file.old"
 
     if [ -f "$old_sha_file" ]
@@ -36,7 +36,7 @@ sha_maker () {
     sha256sum "$group_dir/"* >> "$sha_file" 2> /dev/null
 
     # Remove path from file name (Thanks to Greg from sysnet-adventures)
-    sed -i -r "s/ .*\/(.+)/  \1/g" "$sha_file" 
+    sed -i -r "s/ .*\/(.+)/  \1/g" "$sha_file"
 
     if [ $? -eq 0 ]
     then
