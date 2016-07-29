@@ -1,8 +1,8 @@
 #! /bin/bash
 
 ## Start variables
-NAME=''
-EXTENSION='.tar.'
+NAME='sudo'
+EXTENSION='.tar.gz'
 PACKAGE_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "$NAME-*")
 FOLDER_NAME=$(echo "$PACKAGE_FILE" | sed -e "s/$EXTENSION//")
 ## End variables
@@ -13,13 +13,21 @@ tar xvf "$SOURCE_DIR/$PACKAGE_FILE"
 # Enter the source directory
 pushd "$FOLDER_NAME"
 # Configure the source
-./configure
+./configure --prefix=/usr                          \
+            --disable-static                       \
+            --libexecdir=/usr/lib                  \
+            --with-secure-path                     \
+            --with-all-insults                     \
+            --with-env-editor                      \
+            --docdir="/usr/share/doc/$FOLDER_NAME" \
+            --with-passprompt="[sudo] password for %p"
 # Build using the configured sources
 make -j "$CORES"
 # Install the built package, if set in main script
 if [ "$INSTALL_SOURCES" -eq 1 ]
 then
   make install
+  ln -sfv libsudo_util.so.0.0.0 /usr/lib/sudo/libsudo_util.so.0
 fi
 # Leave the source directory
 popd

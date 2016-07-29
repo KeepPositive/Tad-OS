@@ -1,8 +1,8 @@
 #! /bin/bash
 
 ## Start variables
-NAME=''
-EXTENSION='.tar.'
+NAME='tar'
+EXTENSION='.tar.xz'
 PACKAGE_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "$NAME-*")
 FOLDER_NAME=$(echo "$PACKAGE_FILE" | sed -e "s/$EXTENSION//")
 ## End variables
@@ -13,13 +13,16 @@ tar xvf "$SOURCE_DIR/$PACKAGE_FILE"
 # Enter the source directory
 pushd "$FOLDER_NAME"
 # Configure the source
-./configure
+FORCE_UNSAFE_CONFIGURE=1  \
+./configure --prefix=/usr \
+            --bindir=/bin
 # Build using the configured sources
 make -j "$CORES"
 # Install the built package, if set in main script
 if [ "$INSTALL_SOURCES" -eq 1 ]
 then
   make install
+  make -C doc install-html docdir="/usr/share/doc/$FOLDER_NAME"
 fi
 # Leave the source directory
 popd

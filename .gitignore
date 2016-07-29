@@ -1,9 +1,9 @@
 # Hide all packages, since they are absurdly large
-packs/
+sources/
 
 # Hide compiled HTML files
 *.html
 docs/*.html
 
-# Hide old SHA256 since they are useless in most cases
-sha256/*.old
+# Hide old SHA256 hashes since they are useless in most cases
+sha256sums.old

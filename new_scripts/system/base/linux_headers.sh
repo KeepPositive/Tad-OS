@@ -1,8 +1,8 @@
 #! /bin/bash
 
 ## Start variables
-NAME=''
-EXTENSION='.tar.'
+NAME='linux'
+EXTENSION='.tar.xz'
 PACKAGE_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "$NAME-*")
 FOLDER_NAME=$(echo "$PACKAGE_FILE" | sed -e "s/$EXTENSION//")
 ## End variables
@@ -12,14 +12,14 @@ FOLDER_NAME=$(echo "$PACKAGE_FILE" | sed -e "s/$EXTENSION//")
 tar xvf "$SOURCE_DIR/$PACKAGE_FILE"
 # Enter the source directory
 pushd "$FOLDER_NAME"
-# Configure the source
-./configure
-# Build using the configured sources
-make -j "$CORES"
-# Install the built package, if set in main script
+# Clean the sources
+make mrproper
+# Install the built package
 if [ "$INSTALL_SOURCES" -eq 1 ]
 then
-  make install
+  make INSTALL_HDR_PATH=dest headers_install
+  find dest/include \( -name .install -o -name ..install.cmd \) -delete
+  cp -rv dest/include/* /usr/include
 fi
 # Leave the source directory
 popd

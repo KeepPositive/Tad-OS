@@ -1,8 +1,8 @@
 #! /bin/bash
 
 ## Start variables
-NAME=''
-EXTENSION='.tar.'
+NAME='rpi'
+EXTENSION='.tar.gz'
 PACKAGE_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "$NAME-*")
 FOLDER_NAME=$(echo "$PACKAGE_FILE" | sed -e "s/$EXTENSION//")
 ## End variables

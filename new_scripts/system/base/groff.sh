@@ -1,8 +1,8 @@
 #! /bin/bash
 
 ## Start variables
-NAME=''
-EXTENSION='.tar.'
+NAME='groff'
+EXTENSION='.tar.gz'
 PACKAGE_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "$NAME-*")
 FOLDER_NAME=$(echo "$PACKAGE_FILE" | sed -e "s/$EXTENSION//")
 ## End variables
@@ -12,10 +12,10 @@ FOLDER_NAME=$(echo "$PACKAGE_FILE" | sed -e "s/$EXTENSION//")
 tar xvf "$SOURCE_DIR/$PACKAGE_FILE"
 # Enter the source directory
 pushd "$FOLDER_NAME"
-# Configure the source
-./configure
+# Configure the source (and paper size?)
+PAGE=letter ./configure --prefix=/usr
 # Build using the configured sources
-make -j "$CORES"
+make -j 1
 # Install the built package, if set in main script
 if [ "$INSTALL_SOURCES" -eq 1 ]
 then

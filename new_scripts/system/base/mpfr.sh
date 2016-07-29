@@ -1,8 +1,8 @@
 #! /bin/bash
 
 ## Start variables
-NAME=''
-EXTENSION='.tar.'
+NAME='mpfr'
+EXTENSION='.tar.xz'
 PACKAGE_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "$NAME-*")
 FOLDER_NAME=$(echo "$PACKAGE_FILE" | sed -e "s/$EXTENSION//")
 ## End variables
@@ -13,7 +13,10 @@ tar xvf "$SOURCE_DIR/$PACKAGE_FILE"
 # Enter the source directory
 pushd "$FOLDER_NAME"
 # Configure the source
-./configure
+./configure --prefix=/usr    \
+            --enable-cxx     \
+            --disable-static \
+            --docdir=/usr/share/doc/$FOLDER_NAME
 # Build using the configured sources
 make -j "$CORES"
 # Install the built package, if set in main script
