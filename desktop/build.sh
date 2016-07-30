@@ -1,16 +1,15 @@
 #! /bin/bash
 
-#  No, we are not building you a desktop computer using a bash script, but 
+#  No, we are not building you a desktop computer using a bash script, but
 # rather, this script builds everything for the Openbox desktop. If you
 # are into another lightweight desktop, it likely has many of the same
 # dependencies, so this script might be kinda useful.
 
 ## Start variables
-START_DIR=$(pwd)
-PACKAGE_DIR="$START_DIR/packs/desktop"
-SCRIPT_DIR="$START_DIR/build_scripts/desktop"
+SOURCE_DIR="./sources"
+SCRIPT_DIR="./scripts"
 # Install or naw?
-INSTALL=1
+INSTALL_SOURCES=0
 # Number of cores to use
 CORES=$(grep -c ^processor /proc/cpuinfo)
 ## End variables
@@ -20,34 +19,34 @@ CORES=$(grep -c ^processor /proc/cpuinfo)
 set -o errexit
 # Lets build some stuff!
 # cairo
-source "$SCRIPT_DIR/cairo.sh" "1.14.6"
+source "$SCRIPT_DIR/cairo.sh"
 # gobject-introspection
-source "$SCRIPT_DIR/gobject_intro.sh" "1.48.0"
+source "$SCRIPT_DIR/gobject_intro.sh"
 # pango
-source "$SCRIPT_DIR/pango.sh" "1.40.1"
+source "$SCRIPT_DIR/pango.sh"
 # nasm
-source "$SCRIPT_DIR/nasm.sh" "2.12.01"
+source "$SCRIPT_DIR/nasm.sh"
 # libjpeg-turbo
-source "$SCRIPT_DIR/libjpeg.sh" "1.4.2"
+source "$SCRIPT_DIR/libjpeg.sh"
 # libtiff
-source "$SCRIPT_DIR/libtiff.sh" "4.0.6"
+source "$SCRIPT_DIR/libtiff.sh"
 # gdk-pixbuf
-source "$SCRIPT_DIR/gdk_pixbuf.sh" "2.34.0"
+source "$SCRIPT_DIR/gdk_pixbuf.sh"
 # imlib2
-source "$SCRIPT_DIR/imlib2.sh" "1.4.9"
+source "$SCRIPT_DIR/imlib2.sh"
 # libcroco
-source "$SCRIPT_DIR/libcroco.sh" "0.6.11"
+source "$SCRIPT_DIR/libcroco.sh"
 # librsvg
-source "$SCRIPT_DIR/librsvg.sh" "2.40.15"
+source "$SCRIPT_DIR/librsvg.sh"
 # startup-notification
-source "$SCRIPT_DIR/startup.sh" "0.12"
+source "$SCRIPT_DIR/startup.sh"
 # rxvt-unicode (URxvt)
-source "$SCRIPT_DIR/urxvt.sh" "9.22"
+source "$SCRIPT_DIR/urxvt.sh"
 # openbox
-source "$SCRIPT_DIR/openbox.sh" "3.6.1"
+source "$SCRIPT_DIR/openbox.sh"
 # hsetroot
-source "$SCRIPT_DIR/hsetroot.sh" 
+source "$SCRIPT_DIR/hsetroot.sh"
 
-echo "All done! Have a good day." 
+echo "All done! Have a good day."
 
 ## End script

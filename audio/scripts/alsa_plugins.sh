@@ -1,27 +1,28 @@
 #! /bin/bash
 
 ## Start variables
-PACKAGE="alsa-plugins"
-VERSION=$1
-FOLD_NAME="$PACKAGE-$VERSION"
+NAME='alsa-plugins'
+EXTENSION='.tar.bz2'
+PACKAGE_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "$NAME-*")
+FOLDER_NAME=$(echo "$PACKAGE_FILE" | sed -e "s/$EXTENSION//")
 ## End variables
 
 ## Start script
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.bz2"
-
-pushd "$FOLD_NAME"
-
+# Extract the package file
+tar xvf "$SOURCE_DIR/$PACKAGE_FILE"
+# Enter the source directory
+pushd "$FOLDER_NAME"
 # Configure the source
 ./configure
 # Build using the configured sources
 make -j "$CORES"
-# Install the built package
-if [ "$INSTALL" -eq 1 ]
+# Install the built package, if set in main script
+if [ "$INSTALL_SOURCES" -eq 1 ]
 then
-    make install
+  make install
 fi
-
+# Leave the source directory
 popd
-
-rm -rf "$FOLD_NAME"
+# Remove the built source code
+rm -rf "$FOLDER_NAME"
 ## End script

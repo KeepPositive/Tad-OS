@@ -1,24 +1,34 @@
 #! /bin/bash
 
-PACKAGE="bash"
-VERSION=$1
-FOLD_NAME="$PACKAGE-$VERSION"
+## Start variables
+NAME='bash'
+EXTENSION='.tar.xz'
+PACKAGE_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "$NAME-*")
+FOLDER_NAME=$(echo "$PACKAGE_FILE" | sed -e "s/$EXTENSION//")
+## End variables
 
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.gz"
-
-pushd "$FOLD_NAME"
-
+## Start script
+# Extract the package file
+tar xvf "$SOURCE_DIR/$PACKAGE_FILE"
+# Enter the source directory
+pushd "$FOLDER_NAME"
 # Apply a patch
-patch -Np1 -i "$PACKAGE_DIR/bash-4.3.30-upstream_fixes-3.patch"
+patch -Np1 -i "$SOURCE_DIR/bash-4.3.30-upstream_fixes-3.patch"
 # Configure the source
-./configure --prefix=/usr                       \
-            --docdir=/usr/share/doc/bash-4.3.30 \
-            --without-bash-malloc               \
+./configure --prefix=/usr                        \
+            --docdir=/usr/share/doc/$FOLDER_NAME \
+            --without-bash-malloc                \
             --with-installed-readline
 # Build using the configured sources
 make -j "$CORES"
-# Install the built package
-
+# Install the built package, if set in main script
+if [ "$INSTALL_SOURCES" -eq 1 ]
+then
+  make install
+  mv -vf /usr/bin/bash /bin
+fi
+# Leave the source directory
 popd
-
-rm -rf "$FOLD_NAME"
+# Remove the built source code
+rm -rf "$FOLDER_NAME"
+## End script

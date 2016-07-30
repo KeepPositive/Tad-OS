@@ -1,12 +1,10 @@
 #! /bin/bash
 
 ## Start variables
-
-START_DIR=$(pwd)
-PACKAGE_DIR="$START_DIR/packs/firefox"
-SCRIPT_DIR="$START_DIR/build_scripts/firefox"
-
-INSTALL_SOURCES=1
+SOURCE_DIR="./sources"
+SCRIPT_DIR="./scripts"
+INSTALL_SOURCES=0
+CORES=$(grep -c ^processor /proc/cpuinfo)
 ## End variables
 
 ## Start script
@@ -15,23 +13,23 @@ set -o errexit
 
 # Let's build some stuff!
 # libevent
-source "$SCRIPT_DIR/libevent.sh" "2.0.22"
+#source "$SCRIPT_DIR/libevent.sh"
 # zip
-source "$SCRIPT_DIR/zip.sh" "30"
+#source "$SCRIPT_DIR/zip.sh"
 # unzip
-source "$SCRIPT_DIR/unzip.sh" "60"
+#source "$SCRIPT_DIR/unzip.sh"
 # yasm
-source "$SCRIPT_DIR/yasm.sh" "1.3.0"
+#source "$SCRIPT_DIR/yasm.sh"
 # libvpx
-source "$SCRIPT_DIR/libvpx.sh" "1.5.0"
+#source "$SCRIPT_DIR/libvpx.sh"
 # x264
-source "$SCRIPT_DIR/x264.sh" "20160220-2245"
+#source "$SCRIPT_DIR/x264.sh"
 # x265
-source "$SCRIPT_DIR/x265.sh" "1.9"
- ffmpeg
-source "$SCRIPT_DIR/ffmpeg.sh" "3.0.2"
+#source "$SCRIPT_DIR/x265.sh"
+#ffmpeg
+#source "$SCRIPT_DIR/ffmpeg.sh"
 # firefox
-source "$SCRIPT_DIR/firefox.sh" "46.0.1"
+source "$SCRIPT_DIR/firefox.sh"
 
 echo "All done! Enjoy surfing the web!"
 

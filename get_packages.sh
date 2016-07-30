@@ -4,159 +4,150 @@
 # to build Tad OS from source code. It allows for the download of induviual
 # 'groups' via arguments as well.
 
-START_DIR=$(pwd)
-WGET_DIR="$START_DIR/wget"
-PACKAGE_DIR="$START_DIR/packs"
-SETTING=$1
+## Start functions
 
-checksum_check ()
+get_git_package ()
 {
-    echo "Checking"
+  group=$1
+
+  for url in $(cat "./$group/git-list")
+  do
+    basename=${url##*/}
+    package=$(echo $basename | sed -e 's/.git//')
+    output_dir="./$group/sources/$package"
+    if [ -d "$output_dir" ]
+    then
+      pushd "$output_dir" > /dev/null
+      git pull
+      popd > /dev/null
+    else
+      git clone "$url" "$output_dir" --quiet --progress
+    fi
+  done
 }
 
-get_group () {
-    # The xorg group which will be downloaded
-    download_type=$1
-    sha_file="$START_DIR/sha256/$download_type.sha256"
+get_induvidual_group ()
+{
+  group=$1
+  wget_list="./$group/wget-list"
+  source_directory="./$group/sources"
 
-    echo "Downloading $download_type"
-
-    # If directory does not exist for group, create it
-    if [ ! -d "$PACKAGE_DIR/$download_type" ]
-    then
-        mkdir "$PACKAGE_DIR/$download_type"
-    fi
-    # Enter the directory where the packages should be kept
-    pushd "$PACKAGE_DIR/$download_type" > /dev/null
-    # Get the packages via a wget file
+  if [ -f "$wget_list" ]
+  then
+    echo "Getting $group packages"
+    # Have wget read the wget-list file and output to '$group/sources'
     wget --quiet --show-progress --continue --no-clobber   \
-         --directory-prefix="$PACKAGE_DIR/$download_type"  \
-         --input-file="$WGET_DIR/${download_type}.wget"
-
-    # Verify that the packages are O.K.
-    sha256sum --quiet -c "$sha_file" # Exit the package directory, back to the PACKAGE_DIR
-
+         --directory-prefix="$source_directory"            \
+         --input-file="$wget_list"
+    # If any files must be found via Git
+    if [ -f "./$group/git-list" ]
+    then
+      get_git_package "$group"
+    fi
+    # Enter the source directory
+    pushd "$source_directory" > /dev/null
+    # Verify the source files using the sha256sums file
+    sha256sum --quiet -c "../sha256sums"
     if [ "$?" -eq 0 ]
     then
-        echo "SHA256 check passed for $download_type"
+      echo "SHA256 check passed for $group"
     else
-        echo "Error with SHA256 checksum test."
+      echo "Error with SHA256 checksum test"
     fi
-
+    # Leave the source directory
     popd > /dev/null
+    echo "Packages for $group retrieved successfully"
+  else
+    echo "Invalid package entered"
+  fi
 }
 
-get_xorg_group () {
+get_xorg_group ()
+{
+  group="$1"
+  source_directory="./xorg/$group/sources"
+  sha_file="./xorg/$group/sha256sums"
 
-    download_type=$1
-    # X.Org groups are installed inside a folder with the 'xorg' folder
-    group_dir="$START_DIR/packs/xorg/$download_type"
-    sha_file="$START_DIR/sha256/xorg-$download_type.sha256"
-
-    echo "Downloading xorg-$download_type"
-
-    if [ ! -d "$group_dir" ]
-    then
-        mkdir "$group_dir"
-    fi
-
-    pushd "$group_dir" > /dev/null
-    # This mess of a function below actually has three parts:
-
-    #  'grep', when given then '^#' argument reads each line in the file it is
-    # given, which is then piped to awk using the '|' character. awk's job is
-    # to split the line into parts at each space. When the second 'word' is
-    # found, it can be extracted and piped to wget.
+  if [ -f "$sha_file" ]
+  then
+    echo "Getting xorg-$group packages"
+    #  'grep', when given then '^#' argument reads each line in the
+    # file it is given, which is then piped to awk using the '|'
+    # character. awk's job is to split the line into parts at each
+    # space. When the second 'part', in this case, the package name,
+    # is found, it can be extracted and piped to wget.
     grep -v '^#' "$sha_file" | awk '{print $2}' | \
-    #  Finally, 'wget' downloads all the packages in the group. Since all of
-    # these packages in the group basically have the same prefix URL, they can
-    # be downloaded using only there names in the respective SHA256 file.
-        wget --quiet --show-progress --continue --no-clobber  \
-             --directory-prefix="$group_dir"                  \
-             --input-file=- -B "http://ftp.x.org/pub/individual/$download_type/"
+    #  Finally, 'wget' downloads all the packages in the group. Since
+    # all of these packages in the group basically have the same
+    # prefix URL, they can be downloaded using only there names in the
+    # respective SHA256 file.
+    wget --quiet --show-progress --continue --no-clobber  \
+         --directory-prefix="$source_directory"           \
+         --input-file=- -B "http://ftp.x.org/pub/individual/$download_type/"
 
-    sha256sum --quiet -c "$sha_file"
-
+    pushd "$source_directory" > /dev/null
+    sha256sum --quiet -c "../sha256sums"
     if [ "$?" -eq 0 ]
     then
-        echo "SHA256 check passed for $download_type"
+      echo "SHA256 check passed for $group"
     else
-        echo "Error with SHA256 checksum test."
+      echo "Error with SHA256 checksum test"
     fi
-
     popd > /dev/null
+    echo "Packages for $group retrieved successfully"
+  else
+    echo "Invalid package entered"
+  fi
 }
 
-print_help_message () {
-    
-    for help_string in                                           \
-    "get_packages accepts the following arguments:"              \
-    "\tall\t\tDownload all package groups"                       \
-    "\tbase\t\tPackages need to build a base Tad OS system"      \
-    "\tdesktop\t\tPackages for the Openbox desktop"              \
-    "\textra\t\tExtra tools for building and programming"        \
-    "\thelp\t\tPrint this help message"                          \
-    "\txorg\t\tLibraries and tools necessary for GUIs"           \
-    "\txorg-*\t\tSub-groups for xorg: proto, lib, app and font"
-    do
-        echo -e "$help_string"
-    done
+get_all_groups ()
+{
+  for directory in $(find * -maxdepth 0 -type d)
+  do
+    if [ -f "./$directory/wget-list" ]
+    then
+      get_induvidual_group "$directory"
+    fi
+  done
+  for xorg_group in "app" "font" "lib" "proto"
+  do
+    get_xorg_group "$xorg_group"
+  done
 }
+
+print_help_message ()
+{
+  for help_string in                                        \
+  "USAGE: bash get_packages [ARGUMENT]\n"                   \
+  "ARGUMENTS:"                                              \
+  "  all\t\tDownload all package groups"                    \
+  "  base\t\tPackages need to build a base Tad OS system"   \
+  "  desktop\tPackages for the Openbox desktop"             \
+  "  extra\t\tExtra tools for building and/or programming"  \
+  "  help\t\tPrint this help message"                       \
+  "  xorg\t\tLibraries and tools necessary for a GUI"       \
+  "  xorg-*\tSub-groups for xorg: proto, lib, app and font"
+  do
+      echo -e "$help_string"
+  done
+}
+## End functions
 
 ## Start script
-# Create the PACKAGE_DIR directory if it does not exist
-if [ ! -d "$PACKAGE_DIR" ]
-then
-    mkdir "$PACKAGE_DIR"
-fi
-# Check if wget is installed
-which wget &> /dev/null
-
-if [ $? -ne 0 ]
-then
-    echo "'wget' is not installed! Please install if you wish to continue."
-    exit 1
-fi
-
-# Pass an argument to the script so it can be searched here.
-case $SETTING in
-"all")
-    #for group in "desktop" "extra" "xorg"
-    for group in $(find $WGET_DIR -type f -printf "%f\n")
-    do
-        group_name=${group%.*}
-        #echo "$group_name"
-        get_group $group_name
-    done
-
-    for group in "proto" "lib" "app" "font"
-    do
-        get_xorg_group $group
-    done
-;;
-
-"xorg-"*)
-    xorg_type=$(echo $SETTING | cut -c 6-)
-    echo "Found $SETTING"
-    get_xorg_group "$xorg_type"
-;;
-
+# Note: $1 is the first argument
+case $1 in
 "help")
-    print_help_message
+  print_help_message
 ;;
-
-*) # Print a help  message if you enter an invalid argument
-    
-    WGET_PATH="$WGET_DIR/$SETTING.wget"
-    
-    if [ -f "$WGET_PATH" ]
-    then
-        get_group "$SETTING"
-    else
-        echo -e "File $WGET_PATH does not exist!\n"
-        print_help_message
-    fi
+"all")
+  get_all_groups
+;;
+"xorg-"*)
+  xorg_type=$(echo $1 | cut -c 6-)
+  get_xorg_group "$xorg_type"
+;;
+*)
+  get_induvidual_group $1
 ;;
 esac
-
 ## End script

@@ -1,15 +1,18 @@
 #! /bin/bash
 
-PACKAGE="mesa"
-VERSION=$1
-FOLD_NAME=$PACKAGE-$VERSION
+## Start variables
+NAME='mesa'
+EXTENSION='.tar.xz'
+PACKAGE_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "$NAME-*")
+FOLDER_NAME=$(echo "$PACKAGE_FILE" | sed -e "s/$EXTENSION//")
 GLL_DRV="nouveau,r300,r600,radeonsi,svga,swrast"
+## End variables
 
-
-tar xvf "$PACKAGE_DIR/$FOLD_NAME.tar.xz"
-
-pushd "$FOLD_NAME"
-
+## Start script
+# Extract the package file
+tar xvf "$SOURCE_DIR/$PACKAGE_FILE"
+# Enter the source directory
+pushd "$FOLDER_NAME"
 # Configure the source
 case "$GRAPHICS_DRIVER" in
 "rpi")
@@ -21,10 +24,10 @@ case "$GRAPHICS_DRIVER" in
                 --enable-gles2                  \
                 --enable-osmesa                 \
                 --enable-xa                     \
-                --enable-gbmi			\
-		--with-dri-drivers=             \
+                --enable-gbmi			              \
+		            --with-dri-drivers=             \
                 --enable-glx-tls                \
-                --enable-shared-glapi   	\
+                --enable-shared-glapi   	      \
                 --with-egl-platforms="drm,x11"  \
                 --with-gallium-drivers=vc4
 ;;
@@ -42,13 +45,17 @@ case "$GRAPHICS_DRIVER" in
                 --enable-r600-llvm-compiler     \
                 --with-egl-platforms="drm,x11"  \
                 --with-gallium-drivers=$GLL_DRV
-;;    
+;;
 esac
 # Build using the configured sources
 make -j "$CORES"
-
-# Install the built package
-
+# Install the built package, if set in main script
+if [ "$INSTALL_SOURCES" -eq 1 ]
+then
+  make install
+fi
+# Leave the source directory
 popd
-
-rm -rf "$FOLD_NAME"
+# Remove the built source code
+rm -rf "$FOLDER_NAME"
+## End script

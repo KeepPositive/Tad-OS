@@ -1,10 +1,10 @@
 #! /bin/bash
 
 ## Start variables
-START_DIR=$(pwd)
-PACKAGE_DIR="$START_DIR/packs/gtk"
-SCRIPT_DIR="$START_DIR/build_scripts/gtk"
-INSTALL=1
+SOURCE_DIR="./sources"
+SCRIPT_DIR="./scripts"
+INSTALL_SOURCES=0
+CORES=$(grep -c ^processor /proc/cpuinfo)
 ## End variables
 
 ## Start script
@@ -13,23 +13,23 @@ set -o errexit
 
 # Let's build some stuff!
 # at-spi2-core
-source "$SCRIPT_DIR/at_spi_core.sh" "2.20.1"
+source "$SCRIPT_DIR/at_spi_core.sh"
 # ATK
-source "$SCRIPT_DIR/atk.sh" "2.20.0"
+source "$SCRIPT_DIR/atk.sh"
 # at-spi2-atk
-source "$SCRIPT_DIR/at_spi_atk.sh" "2.20.1"
+source "$SCRIPT_DIR/at_spi_atk.sh"
 # hicolor-icon-theme
-source "$SCRIPT_DIR/hicolor_icons.sh" "0.15"
+source "$SCRIPT_DIR/hicolor_icons.sh"
 # gtk+-2
-source "$SCRIPT_DIR/gtk2.sh" "2.24.30"
+source "$SCRIPT_DIR/gtk2.sh"
 # gtk+-3
-source "$SCRIPT_DIR/gtk3.sh" "3.20.4"
+source "$SCRIPT_DIR/gtk3.sh"
 # XML_Simple
-source "$SCRIPT_DIR/xml_simple.sh" "2.22"
+source "$SCRIPT_DIR/xml_simple.sh"
 # icon-naming-utils
-source "$SCRIPT_DIR/icon_naming_utils.sh" "0.8.90"
+source "$SCRIPT_DIR/icon_naming_utils.sh"
 # gnome icons
-source "$SCRIPT_DIR/gnome_icons.sh" "3.12.0"
+source "$SCRIPT_DIR/gnome_icons.sh"
 # gnome icons extra
-source "$SCRIPT_DIR/gnome_icons_extra.sh" "3.12.0"
+source "$SCRIPT_DIR/gnome_icons_extra.sh"
 ## End script

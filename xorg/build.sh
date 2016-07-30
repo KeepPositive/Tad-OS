@@ -2,99 +2,98 @@
 
 #  This a simple build script which uses sub-scripts to build an X.Org server
 # from scratch, along with all of it's necessary dependencies.
-START_DIR=$(pwd)
-SCRIPT_DIR="$START_DIR/build_scripts/xorg"
-PACKAGE_DIR="$START_DIR/packs/xorg"
+SCRIPT_DIR="./scripts"
+SOURCE_DIR="./sources"
 XORG_CONFIG="--prefix=/usr --sysconfdir=/etc --localstatedir=/var --disable-static "
 # Configurables
 # Choose from: "amd", "intel" or "rpi"
 # Nvidia cards are not supported because I do not have one to test on
-GRAPHICS_DRIVER="rpi"
-INSTALL=1
+GRAPHICS_DRIVER="amd"
+INSTALL_SOURCES=0
 CORES=$(grep -c ^processor /proc/cpuinfo)
 
 # Start script
 set -o errexit
-echo "Building xorg server"
+
 ## Start building some things
 # util-macros
-source "$SCRIPT_DIR/std_xorg_install.sh" "util-macros" "1.19.0"
+source "$SCRIPT_DIR/std_xorg_install.sh" "util-macros"
 # X.Org protocol headers
 source "$SCRIPT_DIR/group_build.sh" "proto"
 # libXau
-source "$SCRIPT_DIR/std_xorg_build.sh" "libXau" "1.0.8"
+source "$SCRIPT_DIR/std_xorg_build.sh" "libXau"
 # libXdmcp
-source "$SCRIPT_DIR/std_xorg_build.sh" "libXdmcp" "1.1.2"
+source "$SCRIPT_DIR/std_xorg_build.sh" "libXdmcp"
 # xcb-proto
-source "$SCRIPT_DIR/std_xorg_install.sh" "xcb-proto" "1.11"
+source "$SCRIPT_DIR/std_xorg_install.sh" "xcb-proto"
 # build libxcb
-source "$SCRIPT_DIR/libxcb.sh" "1.11.1"
-## Start dependencies for Fontconfig which is a dependency for X.Org libraries
+source "$SCRIPT_DIR/libxcb.sh"
+# Start dependencies for Fontconfig which is a dependency for X.Org libraries
 # build libpng
-source "$SCRIPT_DIR/libpng.sh" "1.6.21"
+source "$SCRIPT_DIR/libpng.sh"
 # build FreeType
-source "$SCRIPT_DIR/freetype.sh" "2.6.3"
+source "$SCRIPT_DIR/freetype.sh"
 # build elfutils (a glib optional dependency, but needed for Mesa later)
-source "$SCRIPT_DIR/elfutils.sh" "0.166"
+source "$SCRIPT_DIR/elfutils.sh"
 # build GLib
-source "$SCRIPT_DIR/glib.sh" "2.48.0"
+source "$SCRIPT_DIR/glib.sh"
 # build ICU
-source "$SCRIPT_DIR/icu.sh" "57_1"
+source "$SCRIPT_DIR/icu.sh"
 # build HarfBuzz
-source "$SCRIPT_DIR/harfbuzz.sh" "1.2.6"
+source "$SCRIPT_DIR/harfbuzz.sh"
 ## Rebuild FreeType with HarfBuzz as a dependency
-source "$SCRIPT_DIR/freetype.sh" "2.6.3"
+source "$SCRIPT_DIR/freetype.sh"
 # Finally, build Fontconfig
-source "$SCRIPT_DIR/fontconfig.sh" "2.11.1"
+source "$SCRIPT_DIR/fontconfig.sh"
 # build the X.Org libraries group
 source "$SCRIPT_DIR/group_build.sh" "lib"
 # build xcb-util
-source "$SCRIPT_DIR/std_xorg_build.sh" "xcb-util" "0.4.0"
+source "$SCRIPT_DIR/std_xorg_build.sh" "xcb-util"
 # build xcb-util-image
-source "$SCRIPT_DIR/std_xorg_build.sh" "xcb-util-image" "0.4.0"
+source "$SCRIPT_DIR/std_xorg_build.sh" "xcb-util-image"
 # build xcb-util-keysms
-source "$SCRIPT_DIR/std_xorg_build.sh" "xcb-util-keysyms" "0.4.0"
+source "$SCRIPT_DIR/std_xorg_build.sh" "xcb-util-keysyms"
 # build xcb-util-renderutil
-source "$SCRIPT_DIR/std_xorg_build.sh" "xcb-util-renderutil" "0.3.9"
+source "$SCRIPT_DIR/std_xorg_build.sh" "xcb-util-renderutil"
 # build xcb-util-wm
-source "$SCRIPT_DIR/std_xorg_build.sh" "xcb-util-wm" "0.4.1"
+source "$SCRIPT_DIR/std_xorg_build.sh" "xcb-util-wm"
 # build xcb-util-cursor
-source "$SCRIPT_DIR/std_xorg_build.sh" "xcb-util-cursor" "0.1.2"
+source "$SCRIPT_DIR/std_xorg_build.sh" "xcb-util-cursor"
 # Start Mesa build dependencies
 # build libdrm
-source "$SCRIPT_DIR/libdrm.sh" "2.4.67"
+source "$SCRIPT_DIR/libdrm.sh"
 # build llvm (without clang)
-source "$SCRIPT_DIR/llvm.sh" "3.8.0"
+source "$SCRIPT_DIR/llvm.sh"
 # build libvpdau
-source "$SCRIPT_DIR/libvdpau.sh" "1.1.1"
+source "$SCRIPT_DIR/libvdpau.sh"
 # mesa
-source "$SCRIPT_DIR/mesa.sh" "11.2.1"
+source "$SCRIPT_DIR/mesa.sh"
 # xbitmaps
-source "$SCRIPT_DIR/std_xorg_install.sh" "xbitmaps" "1.1.1"
+source "$SCRIPT_DIR/std_xorg_install.sh" "xbitmaps"
 # X.Org applications group
 source "$SCRIPT_DIR/group_build.sh" "app"
-source "$SCRIPT_DIR/std_xorg_build.sh" "xcursor-themes" "1.0.4"
+source "$SCRIPT_DIR/std_xorg_build.sh" "xcursor-themes"
 source "$SCRIPT_DIR/group_build.sh" "font"
-source "$SCRIPT_DIR/xkeyboardconfig.sh" "2.17"
-source "$SCRIPT_DIR/pixman.sh" "0.34.0"
-source "$SCRIPT_DIR/libepoxy.sh" "1.3.1"
-source "$SCRIPT_DIR/xorgserver.sh" "1.18.3"
+source "$SCRIPT_DIR/xkeyboardconfig.sh"
+source "$SCRIPT_DIR/pixman.sh"
+source "$SCRIPT_DIR/libepoxy.sh"
+source "$SCRIPT_DIR/xorgserver.sh"
 ## This is the part where it gets messy. Time to install drivers...
 ## Please make sure your kernel is configured correctly.
-source "$SCRIPT_DIR/libevdev.sh" "1.4.6"
-source "$SCRIPT_DIR/mtdev.sh" "1.1.5"
+source "$SCRIPT_DIR/libevdev.sh"
+source "$SCRIPT_DIR/mtdev.sh"
 # Might try this alternative in the future
-source "$SCRIPT_DIR/libinput.sh" "1.2.4"
-source "$SCRIPT_DIR/input-evdev.sh" "2.10.1"
+source "$SCRIPT_DIR/libinput.sh"
+source "$SCRIPT_DIR/input-evdev.sh"
 
 case "$GRAPHICS_DRIVER" in
 "amd")
-    echo "Making AMD/ATI graphics driver" 
+    echo "Making AMD/ATI graphics driver"
     sleep 2
-    source "$SCRIPT_DIR/amd.sh" "7.7.0"
+    source "$SCRIPT_DIR/amd.sh"
 ;;
-"intel") 
-    source "$SCRIPT_DIR/intel.sh" "0340718"
+"intel")
+    source "$SCRIPT_DIR/intel.sh"
 ;;
 "rpi")
     echo "Making the RPi framebuffer driver 'fbturbo'"
@@ -102,7 +101,7 @@ case "$GRAPHICS_DRIVER" in
 ;;
 esac
 # xinit
-source "$SCRIPT_DIR/xinit.sh" "1.3.4"
+source "$SCRIPT_DIR/xinit.sh"
 
 echo "All done! Enjoy the remainder of your day"
 ## End script

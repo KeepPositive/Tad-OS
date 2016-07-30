@@ -1,24 +1,23 @@
 #! /bin/bash
 
 ## Start variables
-PACKAGE="hsetroot"
-VERSION="master"
-FOLD_NAME="$PACKAGE-$VERSION"
-
+#  Note: This package is downloaded straight from GitHub, so the build
+# is a little simpler
+NAME='hsetroot'
 ## End variables
 
 ## Start script
-tar xf "$PACKAGE_DIR/$VERSION.tar.gz"
-
-pushd "$FOLD_NAME"
-
-# Configure the source
-#./configure --prefix=/usr
-# Build using the configured sources
+# Enter the source directory
+pushd "$SOURCE_DIR/$NAME"
+# Build the sources
 make -j "$CORES"
-# Install the built package
-
+# Install the built package, if set in main script
+if [ "$INSTALL_SOURCES" -eq 1 ]
+then
+  make install
+fi
+# Leave the source directory
 popd
-
-rm -rf "$FOLD_NAME"
+# Remove the built source code
+rm -rf "$FOLDER_NAME"
 ## End script

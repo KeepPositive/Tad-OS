@@ -1,11 +1,18 @@
 #! /bin/bash
 
 BUILD_TYPE=$1
-BUILD_DIR="$START_DIR/$BUILD_TYPE"
-
+BUILD_DIR="./$BUILD_TYPE-build"
 
 as_root() {
-        su -c \\"$*\\"
+  # Run things as the root user if necessary.
+    if   [ $EUID = 0 ]
+    then
+      $*
+    elif [ -x /usr/bin/sudo ]
+    then
+      sudo $*
+    else
+      su -c \\"$*\\"
     fi
 }
 
@@ -13,15 +20,14 @@ mkdir -p "$BUILD_DIR"
 pushd "$BUILD_DIR"
 
 # For each package in the group, run the commands in the do loop.
-for package in $(grep -v '^#' "$START_DIR/sha256/xorg-$BUILD_TYPE.sha256" \
-                         | awk '{print $2}')
+for package in $(grep -v '^#' "../$BUILD_TYPE/sha256sums" | awk '{print $2}')
 do
     folder_name=${package%.tar.bz2}
-    
-    tar xvf "$START_DIR/packs/xorg/$BUILD_TYPE/$package"
-    
+
+    tar xvf "../$BUILD_TYPE/sources/$package"
+
     pushd "$folder_name"
-    
+
     # For a few X.Org apps, some changes must be made
     case $folder_name in
     luit-[0-9]* )
@@ -37,15 +43,17 @@ do
         sed -e 's/\$(CPP) \$(DEFS)/$(CPP) -P $(DEFS)/' -i man/Makefile.in
     ;;
     esac
-    # Configure IT
+    # Configure the package
     ./configure $XORG_CONFIG
-    #  Use the as_root function above so passwords do not have to be entered 
+    #  Use the as_root function above so passwords do not have to be entered
     # every time
     as_root make install
-    
+    # Leave the source directory
     popd
-    
+    # Remove the sources
     rm -rf "$folder_name"
 done
+# Exit the build directory
 popd
+# Remove the build directory
 rm -rf "$BUILD_DIR"

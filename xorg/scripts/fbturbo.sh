@@ -1,23 +1,27 @@
 #! /bin/bash
 
-PACKAGE="xf86-video-fbturbo"
-VERSION=$1
+## Start variables
+#  Note: This package is downloaded straight from GitHub, so the build
+# is a little simpler
+NAME='xf86-video-fbturbo'
+FOLDER_NAME=$NAME
+## End variables
 
-
-# Pull the fbturbo repository
-git clone https://github.com/ssvb/xf86-video-fbturbo.git
-
-# Change to the source directory
-pushd "$PACKAGE"
-
+## Start script
+# Enter the source directory
+pushd "$SOURCE_DIR/$PACKAGE_FILE"
 # Configure the source
 ./autogen.sh
 ./configure $XORG_CONFIG
-
-# Build using the configured sources
+# Build the sources
 make -j "$CORES"
-
-# Install the built package
-
+# Install the built package, if set in main script
+if [ "$INSTALL_SOURCES" -eq 1 ]
+then
+  make install
+fi
+# Leave the source directory
 popd
-rm -rf "$PACKAGE"
+# Remove the built source code
+rm -rf "$FOLDER_NAME"
+## End script

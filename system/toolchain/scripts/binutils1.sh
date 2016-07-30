@@ -1,34 +1,41 @@
 #! /bin/bash
 
-PACKAGE="binutils"
-VERSION=$1
-FOLD_NAME="$PACKAGE-$VERSION"
-BUILD_DIR="$LFS/$FOLD_NAME/build"
+## Start variables
+NAME='binutils'
+EXTENSION='.tar.bz2'
+PACKAGE_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "$NAME-*")
+FOLDER_NAME=$(echo "$PACKAGE_FILE" | sed -e "s/$EXTENSION//")
+## End variables
 
-tar xvf "$PACKAGE_DIR/$FOLD_NAME.tar.bz2"
-
-mkdir "$BUILD_DIR"
-
-pushd "$BUILD_DIR"
-
+## Start script
+# Extract the package file
+tar xvf "$SOURCE_DIR/$PACKAGE_FILE"
+# Make a build directory
+mkdir "$FOLDER_NAME/build"
+# Enter the build directory
+pushd "$FOLDER_NAME/build"
 # Configure the source
-../configure --prefix=/tools            \
-             --with-sysroot="$LFS"      \
-             --with-lib-path=/tools/lib \
-             --target="$LFS_TGT"        \
-             --disable-nls              \
-             --disable-werror
-
+./configure --prefix=/tools            \
+            --with-sysroot="$LFS"      \
+            --with-lib-path=/tools/lib \
+            --target="$LFS_TGT"        \
+            --disable-nls              \
+            --disable-werror
 # Build using the configured sources
 make -j "$CORES"
-
-# Install the built package
-                ln -sv lib /tools/lib64
-        ;;
-    esac
-    make install
+# Install the built package, if set in main script
+if [ "$INSTALL_SOURCES" -eq 1 ]
+then
+  case $(uname -m) in
+  x86_64)
+    mkdir -v /tools/lib
+    ln -sv lib /tools/lib64
+  ;;
+  esac
+  make install
 fi
-
+# Leave the source directory
 popd
-
-rm -rf "$FOLD_NAME"
+# Remove the built source code
+rm -rf "$FOLDER_NAME"
+## End script

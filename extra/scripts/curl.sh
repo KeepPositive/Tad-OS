@@ -1,32 +1,39 @@
 #! /bin/bash
 
-PACKAGE=curl
-VERSION=$1
-FOLD_NAME=curl-curl-$VERSION
+## Start variables
+NAME='curl'
+VERSION=$(date +%Y%m%d)
+## End variables
 
-tar xf $PACKAGE_DIR/curl-$VERSION.tar.gz
-pushd $FOLD_NAME
-
+## Start script
+# Enter the source directory
+pushd "$SOURCE_DIR/$NAME"
+# Generate the configure file
+./buildconf
 # Configure the source
-./buildconf # Kinda like an autogen script
-./configure --prefix=/usr              \
-            --disable-static           \
+./configure --prefix=/usr    \
+            --disable-static \
             --enable-threaded-resolver
 # Build using the configured sources
-make -j $CORES
-# Install the built package
-    rm -rf docs/examples/.deps
+make -j "$CORES"
+# Install the built package, if set in main script
+if [ "$INSTALL_SOURCES" -eq 1 ]
+then
+  make install
+  cp -a docs docs-save
+  rm -rf docs/examples/.deps
 
-    find docs \( -name Makefile\* \
-              -o -name \*.1       \
-              -o -name \*.3 \)    \
-              -exec rm {} \;
-    install -v -d -m755 /usr/share/doc/curl-$VERSION
-    cp -v -R docs/* /usr/share/doc/curl-$VERSION
-    rm -rf docs
-    mv -i docs-save doc
+  find docs \( -name Makefile\* \
+            -o -name \*.1       \
+            -o -name \*.3 \)    \
+            -exec rm {} \;
+  install -v -d -m755 /usr/share/doc/curl-$VERSION
+  cp -v -R docs/* /usr/share/doc/curl-$VERSION
+  rm -rf docs
+  mv -i docs-save doc
 fi
-
+# Leave the source directory
 popd
-
-rm -rf $FOLD_NAME
+# Remove the built source code
+rm -rf "$FOLDER_NAME"
+## End script

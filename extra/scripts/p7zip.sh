@@ -1,19 +1,29 @@
 #! /bin/bash
 
-PACKAGE="p7zip"
-VERSION=$1
-FOLD_NAME=$PACKAGE"_$VERSION"
+## Start variables
+NAME='p7zip'
+EXTENSION='.tar.bz2'
+PACKAGE_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "$NAME-*")
+FOLDER_NAME=$(echo "$PACKAGE_FILE" | sed -e "s/_src_all$EXTENSION//")
+## End variables
 
-echo "$FOLD_NAME"
-
-tar xf "$PACKAGE_DIR/${PACKAGE}_${VERSION}_src_all.tar.bz2"
-pushd "$FOLD_NAME"
-
+## Start script
+# Extract the package file
+tar xvf "$SOURCE_DIR/${PACKAGE_FILE}"
+# Enter the source directory
+pushd "$FOLDER_NAME"
 # Build using the configured sources
-# We don't use 'make all3' because RAR is a propritary format
-make -j $CORES all
-# Install the built package
+make -j "$CORES" all2
+# Install the built package, if set in main script
+if [ "$INSTALL_SOURCES" -eq 1 ]
+then
+  make install
+  DEST_HOME=/usr \
+  DEST_MAN=/usr/share/man \
+  DEST_SHARE_DOC="/usr/share/doc/$FOLDER_NAME" install
 fi
-
+# Leave the source directory
 popd
-rm -rf "$FOLD_NAME"
+# Remove the built source code
+rm -rf "$FOLDER_NAME"
+## End script

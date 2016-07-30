@@ -1,20 +1,30 @@
 #! /bin/bash
 
-PACKAGE="libevdev"
-VERSION=$1
-FOLD_NAME=$PACKAGE-$VERSION
+## Start variables
+NAME='libevdev'
+EXTENSION='.tar.xz'
+PACKAGE_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "$NAME-*")
+FOLDER_NAME=$(echo "$PACKAGE_FILE" | sed -e "s/$EXTENSION//")
+## End variables
 
-tar xf "$PACKAGE_DIR/$FOLD_NAME.tar.xz"
-pushd "$FOLD_NAME"
-
+## Start script
+# Extract the package file
+tar xvf "$SOURCE_DIR/$PACKAGE_FILE"
+# Enter the source directory
+pushd "$FOLDER_NAME"
 # Configure the source
 ./configure $XORG_CONFIG
-
 # Build using the configured sources
+#  Note: If your kernel is not configured correctly, this is likely
+# the reason for a failure to build
 make -j "$CORES"
-#  If your kernel is not configured correctly, this is likely the reason 
-# for a failure to build
-
-# Install the built package
+# Install the built package, if set in main script
+if [ "$INSTALL_SOURCES" -eq 1 ]
+then
+  make install
+fi
+# Leave the source directory
 popd
-rm -rf "$FOLD_NAME"
+# Remove the built source code
+rm -rf "$FOLDER_NAME"
+## End script

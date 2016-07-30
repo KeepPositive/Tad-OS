@@ -1,18 +1,26 @@
 #! /bin/bash
 
-PACKAGE=$1
-VERSION=$2
-FOLD_NAME="$PACKAGE-$VERSION"
+## Start variables
+NAME="$1"
+EXTENSION='.tar.bz2'
+PACKAGE_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "$NAME-*")
+FOLDER_NAME=$(echo "$PACKAGE_FILE" | sed -e "s/$EXTENSION//")
+## End variables
 
-
-tar xvf "$PACKAGE_DIR/$FOLD_NAME.tar.bz2"
-
-pushd "$FOLD_NAME"
-
+## Start script
+# Extract the package file
+tar xvf "$SOURCE_DIR/$PACKAGE_FILE"
+# Enter the source directory
+pushd "$FOLDER_NAME"
 # Configure the source
-echo "XORG_CONFIG: $XORG_CONFIG" 
 ./configure $XORG_CONFIG
-# Install the package
-
+# Install the built package, if set in main script
+if [ "$INSTALL_SOURCES" -eq 1 ]
+then
+  make install
+fi
+# Leave the source directory
 popd
-rm -rf "$FOLD_NAME"
+# Remove the built source code
+rm -rf "$FOLDER_NAME"
+## End script

@@ -5,36 +5,40 @@
 
 ## Start variables
 SCRIPT_DIR="./scripts"
-PACKAGE_DIR="./sources"
+SOURCE_DIR="./sources"
 # Configuration
 CORES=$(grep -c ^processor /proc/cpuinfo)
-INSTALL=0
+INSTALL_SOURCES=0
 ## End variables
 
 ## Start script
+echo "$SCRIPT_DIR"
+echo "$PACKAGE_DIR"
 # End script when error occurs
 set -o errexit
 # Time to build!
 # ALSA-lib
-source "$SCRIPT_DIR/alsa_lib.sh" "1.1.1"
+echo "NIM"
+source "$SCRIPT_DIR/alsa_lib.sh"
+echo "SQUID"
 # ALSA-plugins
-source "$SCRIPT_DIR/alsa_plugins.sh" "1.1.1"
+source "$SCRIPT_DIR/alsa_plugins.sh"
 # ALSA-utils
-source "$SCRIPT_DIR/alsa_utils.sh" "1.1.1"
+source "$SCRIPT_DIR/alsa_utils.sh"
 # Json-C
-source "$SCRIPT_DIR/jsonc.sh" "0.12-20140410"
+source "$SCRIPT_DIR/jsonc.sh"
 # libogg
-source "$SCRIPT_DIR/libogg.sh" "1.3.2"
+source "$SCRIPT_DIR/libogg.sh"
 # libvorbis
-source "$SCRIPT_DIR/libvorbis.sh" "1.3.5"
+source "$SCRIPT_DIR/libvorbis.sh"
 # FLAC
-source "$SCRIPT_DIR/flac.sh" "1.3.1"
+source "$SCRIPT_DIR/flac.sh"
 # LAME
-source "$SCRIPT_DIR/lame.sh" "3.99.5"
+source "$SCRIPT_DIR/lame.sh"
 # libsndfile
-source "$SCRIPT_DIR/libsndfile.sh" "1.0.26"
+source "$SCRIPT_DIR/libsndfile.sh"
 # Pulseaudio
-source "$SCRIPT_DIR/pulseaudio.sh" "8.0"
+source "$SCRIPT_DIR/pulseaudio.sh"
 
 echo "Listen to all the audio your heart desires!"
 ## End script

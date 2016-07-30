@@ -1,31 +1,38 @@
 #! /bin/bash
 
-PACKAGE="binutils"
-VERSION=$1
-FOLD_NAME="$PACKAGE-$VERSION"
-BUILD_DIR="/$FOLD_NAME/build"
+## Start variables
+NAME='binutils'
+EXTENSION='.tar.bz2'
+PACKAGE_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "$NAME-*")
+FOLDER_NAME=$(echo "$PACKAGE_FILE" | sed -e "s/$EXTENSION//")
+## End variables
 
-tar xvf "$PACKAGE_DIR/$FOLD_NAME.tar.bz2"
-
-pushd "$FOLD_NAME"
+## Start script
+# Extract the package file
+tar xvf "$SOURCE_DIR/$PACKAGE_FILE"
+# Enter the source directory
+pushd "$FOLDER_NAME"
 # Verify some things using expect
 expect -c "spawn ls"
-# Apply this patch
-patch -Np1 -i "$PACKAGE_DIR/binutils-2.26-upstream_fixes-3.patch"
+# Leave the source directory
 popd
-
-mkdir "$BUILD_DIR"
-
-pushd "$BUILD_DIR"
-
+# Make a build directory
+mkdir "$FOLDER_NAME/build"
+#Enter the build directory
+pushd "$FOLDER_NAME/build"
 # Configure the source
-../configure --prefix=/usr   \
-             --enable-shared \
-             --disable-werror
+./configure --prefix=/usr    \
+            --enable-shared  \
+            --disable-werror
 # Build using the configured sources
-make -j "$CORES" tooldir=/usr  
-# Install the built package
-# Exit the build dir
+make tooldir=/usr -j "$CORES"
+# Install the built package, if set in main script
+if [ "$INSTALL_SOURCES" -eq 1 ]
+then
+  make tooldir=/usr install
+fi
+# Leave the source directory
 popd
-# Remove the source code directory
-rm -rf "$FOLD_NAME"
+# Remove the built source code
+rm -rf "$FOLDER_NAME"
+## End script
