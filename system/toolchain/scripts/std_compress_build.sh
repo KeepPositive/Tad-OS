@@ -1,9 +1,10 @@
 #! /bin/bash
 
 ## Start variables
-NAME='bzip2'
-EXTENSION='.tar.gz'
-PACKAGE_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "$NAME-*")
+NAME="$1"
+HINT="$2"
+EXTENSION=".tar.xz"
+PACKAGE_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "$NAME-$HINT*")
 FOLDER_NAME=$(echo "$PACKAGE_FILE" | sed -e "s/$EXTENSION//")
 ## End variables
 
@@ -12,12 +13,14 @@ FOLDER_NAME=$(echo "$PACKAGE_FILE" | sed -e "s/$EXTENSION//")
 tar xvf "$SOURCE_DIR/$PACKAGE_FILE"
 # Enter the source directory
 pushd "$FOLDER_NAME"
-# Build using the sources
+# Configure the source
+./configure --prefix=/tools
+# Build using the configured sources
 make -j "$CORES"
 # Install the built package, if set in main script
 if [ "$INSTALL_SOURCES" -eq 1 ]
 then
-  make PREFIX=/tools install
+  make install
 fi
 # Leave the source directory
 popd

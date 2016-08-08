@@ -7,3 +7,6 @@ docs/*.html
 
 # Hide old SHA256 hashes since they are useless in most cases
 sha256sums.old
+
+# hide the system build.conf so the user generates their own
+system/build.conf

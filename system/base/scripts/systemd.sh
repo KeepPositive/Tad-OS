@@ -14,8 +14,10 @@ tar xvf "$SOURCE_DIR/$PACKAGE_FILE"
 pushd "$FOLDER_NAME"
 # Prevent an error
 sed -i "s:blkid/::" $(grep -rl "blkid/blkid.h")
-# Apply a patch
-patch -Np1 -i "$PACKAGE_DIR/systemd-$VERSION-compat-1.patch"
+# Prevent a security issue
+sed -e 's@DRI and frame buffer@DRI@'                  \
+    -e '/SUBSYSTEM==\"graphics\", KERNEL==\"fb\*\"/d' \
+    -i  src/login/70-uaccess.rules
 # Rebuild some edited files
 autoreconf -fi
 # Make a configure file
@@ -34,17 +36,18 @@ do
   echo $line > config.cache
 done
 # Configure the source
-./configure --prefix=/usr          \
-            --sysconfdir=/etc      \
-            --localstatedir=/var   \
-            --config-cache         \
-            --with-rootprefix=     \
-            --with-rootlibdir=/lib \
-            --enable-split-usr     \
-            --disable-firstboot    \
-            --disable-ldconfig     \
-            --disable-sysusers     \
-            --without-python       \
+./configure --prefix=/usr            \
+            --sysconfdir=/etc        \
+            --localstatedir=/var     \
+            --config-cache           \
+            --with-rootprefix=       \
+            --with-rootlibdir=/lib   \
+            --enable-split-usr       \
+            --disable-firstboot      \
+            --disable-ldconfig       \
+            --disable-sysusers       \
+            --without-python         \
+            --with-default-dnssec=no \
             --docdir="/usr/share/doc/$FOLDER_NAME"
 # Build using the configured sources
 make -j "$CORES" LIBRARY_PATH=/tools/lib

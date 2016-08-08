@@ -13,26 +13,26 @@ tar xvf "$SOURCE_DIR/$PACKAGE_FILE"
 # Enter the source directory
 pushd "$FOLDER_NAME"
 # Apply a patch for the RPi
-case $SYSTEM in
+case $SYSTEM_TYPE in
 "rpi")
   patch -Np1 -i "$PACKAGE_DIR/gcc-5.3.0-rpi3-cpu-default.patch"
 ;;
 esac
 # Extract a few other packages into the GCC sources
-MPFR_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "mpfr-*")
-MPFR_FOLDER=$(echo "$MPFR_FOLDER" | sed -e "s/.tar.xz//")
-tar xvf "$SOURCE_DIR/$MPFR_FILE"
-mv -v "$MPFR_FOLDER"
+MPFR_FILE=$(ls --ignore='*.patch' ../$SOURCE_DIR | grep -m 1 "mpfr-*")
+MPFR_FOLDER=$(echo "$MPFR_FILE" | sed -e "s/.tar.xz//")
+tar xvf "../$SOURCE_DIR/$MPFR_FILE"
+mv -v "$MPFR_FOLDER" 'mpfr'
 # More packages
-GMP_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "gmp-*")
+GMP_FILE=$(ls --ignore='*.patch' ../$SOURCE_DIR | grep -m 1 "gmp-*")
 GMP_FOLDER=$(echo "$GMP_FILE" | sed -e "s/.tar.xz//")
-tar xvf "$SOURCE_DIR/$GMP_FILE"
-mv -v "$GMP_FOLDER"
+tar xvf "../$SOURCE_DIR/$GMP_FILE"
+mv -v "$GMP_FOLDER" 'gmp'
 # Last package
-MPC_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "mpc-*")
+MPC_FILE=$(ls --ignore='*.patch' ../$SOURCE_DIR | grep -m 1 "mpc-*")
 MPC_FOLDER=$(echo "$MPC_FILE" | sed -e "s/.tar.gz//")
-tar xvf "$SOURCE_DIR/$MPC_FILE"
-mv -v "$MPC_FOLDER"
+tar xvf "../$SOURCE_DIR/$MPC_FILE"
+mv -v "$MPC_FOLDER" 'mpc'
 # Write some config files
 case $SYSTEM in
 "rpi")
@@ -72,27 +72,27 @@ mkdir "$FOLDER_NAME/build"
 #Enter the build directory
 pushd "$FOLDER_NAME/build"
 # Configure the source
-./configure --target=$LFS_TGT                              \
-            --prefix=/tools                                \
-            --with-glibc-version=2.11                      \
-            --with-sysroot=$LFS                            \
-            --with-newlib                                  \
-            --without-headers                              \
-            --with-local-prefix=/tools                     \
-            --with-native-system-header-dir=/tools/include \
-            --disable-nls                                  \
-            --disable-shared                               \
-            --disable-multilib                             \
-            --disable-decimal-float                        \
-            --disable-threads                              \
-            --disable-libatomic                            \
-            --disable-libgomp                              \
-            --disable-libmpx                               \
-            --disable-libquadmath                          \
-            --disable-libssp                               \
-            --disable-libvtv                               \
-            --disable-libstdcxx                            \
-            --enable-languages=c,c++
+../configure --target="$LFS_TGT"                            \
+             --prefix=/tools                                \
+             --with-glibc-version=2.11                      \
+             --with-sysroot="$LFS"                          \
+             --with-newlib                                  \
+             --without-headers                              \
+             --with-local-prefix=/tools                     \
+             --with-native-system-header-dir=/tools/include \
+             --disable-nls                                  \
+             --disable-shared                               \
+             --disable-multilib                             \
+             --disable-decimal-float                        \
+             --disable-threads                              \
+             --disable-libatomic                            \
+             --disable-libgomp                              \
+             --disable-libmpx                               \
+             --disable-libquadmath                          \
+             --disable-libssp                               \
+             --disable-libvtv                               \
+             --disable-libstdcxx                            \
+             --enable-languages=c,c++
 # Edit the Makefile to prevent a Pi build error
 case $SYSTEM in
 "rpi")

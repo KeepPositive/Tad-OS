@@ -19,20 +19,20 @@ case $SYSTEM in
 ;;
 esac
 # Extract a few other packages into the GCC sources
-MPFR_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "mpfr-*")
-MPFR_FOLDER=$(echo "$MPFR_FOLDER" | sed -e "s/.tar.xz//")
-tar xvf "$SOURCE_DIR/$MPFR_FILE"
-mv -v "$MPFR_FOLDER"
+MPFR_FILE=$(ls --ignore='*.patch' ../$SOURCE_DIR | grep -m 1 "mpfr-*")
+MPFR_FOLDER=$(echo "$MPFR_FILE" | sed -e "s/.tar.xz//")
+tar xvf "../$SOURCE_DIR/$MPFR_FILE"
+mv -v "$MPFR_FOLDER" 'mpfr'
 # More packages
-GMP_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "gmp-*")
+GMP_FILE=$(ls --ignore='*.patch' ../$SOURCE_DIR | grep -m 1 "gmp-*")
 GMP_FOLDER=$(echo "$GMP_FILE" | sed -e "s/.tar.xz//")
-tar xvf "$SOURCE_DIR/$GMP_FILE"
-mv -v "$GMP_FOLDER"
+tar xvf "../$SOURCE_DIR/$GMP_FILE"
+mv -v "$GMP_FOLDER" 'gmp'
 # Last package
-MPC_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "mpc-*")
+MPC_FILE=$(ls --ignore='*.patch' ../$SOURCE_DIR | grep -m 1 "mpc-*")
 MPC_FOLDER=$(echo "$MPC_FILE" | sed -e "s/.tar.gz//")
-tar xvf "$SOURCE_DIR/$MPC_FILE"
-mv -v "$MPC_FOLDER"
+tar xvf "../$SOURCE_DIR/$MPC_FILE"
+mv -v "$MPC_FOLDER" 'mpc'
 # Write some config files
 case $SYSTEM in
 "rpi")

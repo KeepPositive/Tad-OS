@@ -3,7 +3,7 @@
 ## Start variables
 NAME='make'
 EXTENSION='.tar.bz2'
-PACKAGE_FILE=$(ls --ignore='*.patch' $SOURCE_DIR | grep -m 1 "$NAME-*")
+PACKAGE_FILE=$(ls --ignore='automake*' $SOURCE_DIR | grep -m 1 "$NAME-*")
 FOLDER_NAME=$(echo "$PACKAGE_FILE" | sed -e "s/$EXTENSION//")
 ## End variables
 

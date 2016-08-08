@@ -15,22 +15,22 @@ mkdir "$FOLDER_NAME/build"
 # Enter the build directory
 pushd "$FOLDER_NAME/build"
 # Configure the source
-./configure --prefix=/tools            \
-            --with-sysroot="$LFS"      \
-            --with-lib-path=/tools/lib \
-            --target="$LFS_TGT"        \
-            --disable-nls              \
-            --disable-werror
+../configure --prefix=/tools            \
+             --with-sysroot="$LFS"      \
+             --with-lib-path=/tools/lib \
+             --target="$LFS_TGT"        \
+             --disable-nls              \
+             --disable-werror
 # Build using the configured sources
 make -j "$CORES"
 # Install the built package, if set in main script
 if [ "$INSTALL_SOURCES" -eq 1 ]
 then
   case $(uname -m) in
-  x86_64)
-    mkdir -v /tools/lib
-    ln -sv lib /tools/lib64
-  ;;
+    x86_64)
+      mkdir -v /tools/lib
+      ln -sv lib /tools/lib64
+    ;;
   esac
   make install
 fi

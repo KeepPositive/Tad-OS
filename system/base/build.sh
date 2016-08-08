@@ -1,10 +1,10 @@
 #! /bin/bash
 
 ## Start variables
-CONFIGURE_FILE="/build.cfg"
+CONFIGURE_FILE="./build.cfg"
 CORES=$(grep -c ^processor /proc/cpuinfo)
-SCRIPT_DIR="/base"
-PACKAGE_DIR="/source"
+SCRIPT_DIR="./scripts"
+PACKAGE_DIR="../sources"
 # Get variables from CONFIGURE_FILE
 for name in "INSTALL_SOURCES" "LFS" "SYSTEM" "TIMEZONE"
 do
